@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider, useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Bird, Bot, Menu } from "lucide-react";
 import GoogleAnalyticsProvider from "@/components/GoogleAnalyticsProvider";
 import { ThemeButton } from "@/components/ThemeButton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { ThemeButtonMobile } from "@/components/ThemeButtonMobile";
 
 // Font variables
 const geistSans = localFont({
@@ -57,7 +58,7 @@ export default function RootLayout({
             
           
           {/* Nav Items */}
-            <nav className="ml-auto gap-2 lg:gap-4 items-center hidden sm:flex">
+            <nav className="ml-auto gap-2 lg:gap-4 items-center hidden md:flex">
             
             <Link href={"/"}>
               <Button variant={"ghost"} className="text-md py-5">
@@ -73,7 +74,7 @@ export default function RootLayout({
 
             <Link href={"/docs"}>
               <Button variant={"ghost"} className="text-md py-5">
-              Documentation
+                How It Works
               </Button>
             </Link>
 
@@ -91,8 +92,8 @@ export default function RootLayout({
 
             </nav>
 
-            <nav className="ml-auto gap-2 lg:gap-4 items-center hidden sm:flex">
-              <Link href={"/players"}>
+            <nav className="ml-auto gap-2 lg:gap-4 items-center hidden md:flex">
+              <Link href={"/demo"}>
                 <Button variant={"default"} className="lg:text-sm py-5 font-bold">
                 Try Now!
                 </Button>
@@ -102,39 +103,53 @@ export default function RootLayout({
             </nav>
 
             {/* Hamburger Menu for Mobile */}
-            <div className="sm:hidden ml-auto flex items-center">
+            <div className="md:hidden ml-auto flex items-center">
               <DropdownMenu>
                 <DropdownMenuTrigger><Menu className="text-primary"/></DropdownMenuTrigger>
                 <DropdownMenuContent className="px-2 pt-2">
+                  <div className="px-10">
                   <DropdownMenuItem className="flex flex-col gap-2">
                       <Link href={"/"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
-                        Home
+                          Home
                         </Button>
                       </Link>
 
                       <Link href={"/about"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
-                        About Us
+                          About Us
                         </Button>
                       </Link>
 
                       <Link href={"/docs"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
-                        Documentation
+                          How It Works
+                        </Button>
+                      </Link>
+                      
+                      <Link href={"/docs"}>
+                        <Button variant={"outline"} className="lg:text-sm w-full">
+                          GitHub
                         </Button>
                       </Link>
 
-                      <Link href={"/players"}>
+                      <Link href={"/docs"}>
+                        <Button variant={"outline"} className="lg:text-sm w-full">
+                          YouTube
+                        </Button>
+                      </Link>
+
+                      
+                      <Link href={"/demo"}>
                         <Button variant={"default"} className="lg:text-sm font-bold w-full">
-                        Lets Talk!
+                          Lets Talk!
                         </Button>
                       </Link>
 
-                      <div className="flex justify-start">
-                        <ThemeButton />
-                      </div>
+                      <ThemeButtonMobile/>
+
                     </DropdownMenuItem>
+                    </div>
                   </DropdownMenuContent>
               </DropdownMenu>
               

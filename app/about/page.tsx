@@ -28,7 +28,7 @@ export default function About() {
           <Card className='border-primary bg-card'>
             <CardContent className="p-6">
               <div className="flex flex-col items-center">
-          <div className="relative lg:w-32 lg:h-32 h-20 w-20 rounded-full overflow-hidden mb-4">
+          <div className="relative h-40 w-40 rounded-full overflow-hidden ">
             <Image
               src="/about/raze.png"
               alt="Calvin Koay"
@@ -51,7 +51,7 @@ export default function About() {
           <Card className='border-primary bg-card'>
             <CardContent className="p-10">
           <div className="flex flex-col items-center">
-              <div className="relative lg:w-32 lg:h-32 h-20 w-20 rounded-full overflow-hidden mb-4">
+              <div className="relative h-40 w-40 rounded-full overflow-hidden ">
               <Image
             src="/about/viper.png"
             alt="Bing Feng"
@@ -73,12 +73,12 @@ export default function About() {
           <Card className='border-primary bg-card'>
             <CardContent className="p-10">
           <div className="flex flex-col items-center">
-              <div className="relative lg:w-32 lg:h-32 h-20 w-20 rounded-full overflow-hidden mb-4">
+              <div className="relative h-40 w-40 rounded-full overflow-hidden">
               <Image
-            src="/about/kj.png"
-            alt="Chee Yee"
-            layout="fill"
-            objectFit="cover"
+                src="/about/kj.png"
+                alt="Chee Yee"
+                layout="fill"
+                objectFit="cover"
               />
               </div>
               <h2 className="text-lg lg:text-3xl font-semibold mb-2">Chee Yee</h2>
