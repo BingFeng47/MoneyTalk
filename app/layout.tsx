@@ -4,9 +4,10 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Bird, Bot } from "lucide-react";
+import { Bird, Bot, Menu } from "lucide-react";
 import GoogleAnalyticsProvider from "@/components/ui/GoogleAnalyticsProvider";
 import { ThemeButton } from "@/components/ui/ThemeButton";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 // Font variables
 const geistSans = localFont({
@@ -56,7 +57,7 @@ export default function RootLayout({
             
           
           {/* Nav Items */}
-            <nav className="ml-auto  gap-2 lg:gap-4 items-center hidden sm:flex">
+            <nav className="ml-auto gap-2 lg:gap-4 items-center hidden sm:flex">
             
             <Link href={"/"}>
               <Button variant={"outline"} className="lg:text-sm py-5">
@@ -85,6 +86,45 @@ export default function RootLayout({
             <ThemeButton />
 
             </nav>
+
+            {/* Hamburger Menu for Mobile */}
+            <div className="sm:hidden ml-auto flex items-center">
+              <DropdownMenu>
+                <DropdownMenuTrigger><Menu className="text-primary"/></DropdownMenuTrigger>
+                <DropdownMenuContent className="px-2 pt-2">
+                    <DropdownMenuItem className="flex flex-col gap-2 ">
+                    <Link href={"/"}>
+                      <Button variant={"outline"} className="lg:text-sm w-full">
+                      Dashboard
+                      </Button>
+                    </Link>
+
+                    <Link href={"/about"}>
+                      <Button variant={"outline"} className="lg:text-sm w-full">
+                      About Us
+                      </Button>
+                    </Link>
+
+                    <Link href={"/docs"}>
+                      <Button variant={"outline"} className="lg:text-sm w-full">
+                      Documentation
+                      </Button>
+                    </Link>
+                    
+                    <Link href={"/players"}>
+                      <Button variant={"default"} className="lg:text-sm font-bold w-full">
+                      Lets Talk!
+                      </Button>
+                    </Link>
+                    <div className="flex justify-start">
+                      <ThemeButton />
+                    </div>
+                    </DropdownMenuItem>
+                  
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
+            </div>
 
         </header>
 
