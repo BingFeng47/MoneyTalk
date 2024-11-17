@@ -60,31 +60,45 @@ export default function RootLayout({
             <nav className="ml-auto gap-2 lg:gap-4 items-center hidden sm:flex">
             
             <Link href={"/"}>
-              <Button variant={"outline"} className="lg:text-sm py-5">
+              <Button variant={"ghost"} className="text-md py-5">
                 Home
               </Button>
             </Link>
 
             <Link href={"/about"}>
-              <Button variant={"outline"} className="lg:text-sm py-5">
+              <Button variant={"ghost"} className="text-md py-5">
               About Us
               </Button>
             </Link>
 
             <Link href={"/docs"}>
-              <Button variant={"outline"} className="lg:text-sm py-5">
+              <Button variant={"ghost"} className="text-md py-5">
               Documentation
               </Button>
             </Link>
-            
-            <Link href={"/players"}>
-              <Button variant={"default"} className="lg:text-sm py-5 font-bold">
-              Lets Talk!
+
+            <Link href={"/"}>
+              <Button variant={"ghost"} className="text-md py-5">
+              GitHub
               </Button>
             </Link>
 
-            <ThemeButton />
+            <Link href={"/"}>
+              <Button variant={"ghost"} className="text-md py-5">
+              YouTube
+              </Button>
+            </Link>
 
+            </nav>
+
+            <nav className="ml-auto gap-2 lg:gap-4 items-center hidden sm:flex">
+              <Link href={"/players"}>
+                <Button variant={"default"} className="lg:text-sm py-5 font-bold">
+                Try Now!
+                </Button>
+              </Link>
+
+              <ThemeButton />
             </nav>
 
             {/* Hamburger Menu for Mobile */}

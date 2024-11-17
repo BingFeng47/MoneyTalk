@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 const SpeechListener = () => {
     const [detectedText, setDetectedText] = useState('');
+    const [isListening, setIsListening] = useState(false);
+    let recognition: SpeechRecognition;
 
     useEffect(() => {
         if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
@@ -9,40 +11,42 @@ const SpeechListener = () => {
             return;
         }
 
-        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
         recognition.lang = 'en-US';
         recognition.interimResults = true;
         recognition.maxAlternatives = 1;
 
-        // When speech is detected
         recognition.onresult = (event) => {
-            const transcript = event.results[event.resultIndex][0].transcript;
-            console.log(`Heard: ${transcript}`);
+            const transcript = event.results[0][0].transcript;
             setDetectedText(transcript);
+        };
 
-            // Check if the workphrase is "hello"
-            if (transcript.toLowerCase().includes('hello')) {
-                console.log('Hello detected, triggering action.');
-                // Trigger your desired action here
+        recognition.onend = () => {
+            if (isListening) {
+                recognition.start();
             }
         };
 
-        recognition.onerror = (event) => {
-            console.error('Speech recognition error:', event.error);
-        };
-
-        // Start listening in the background
-        recognition.start();
-
-        // Clean up when the component is unmounted
         return () => {
             recognition.stop();
         };
-    }, []);
+    }, [isListening]);
+
+    const startListening = () => {
+        setIsListening(true);
+        recognition.start();
+    };
+
+    const stopListening = () => {
+        setIsListening(false);
+        recognition.stop();
+    };
 
     return (
         <div>
             <p>Detected Text: {detectedText}</p>
+            <button onClick={startListening} disabled={isListening}>Start</button>
+            <button onClick={stopListening} disabled={!isListening}>Stop</button>
         </div>
     );
 };
