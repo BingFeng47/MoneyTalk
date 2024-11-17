@@ -107,7 +107,7 @@ export default function RootLayout({
               <DropdownMenu>
                 <DropdownMenuTrigger><Menu className="text-primary"/></DropdownMenuTrigger>
                 <DropdownMenuContent className="px-2 pt-2">
-                  <div className="px-10">
+                  <div className="px-8 py-5 bg-accent rounded-lg mr-3 border border-primary">
                   <DropdownMenuItem className="flex flex-col gap-2">
                       <Link href={"/"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
