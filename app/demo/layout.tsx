@@ -12,8 +12,8 @@ export default function DemoLayout({
             <SidebarProvider>
             <AppSidebar />
             <main>
-                <SidebarTrigger />
-                {children}
+              <SidebarTrigger />
+              {children}
             </main>
             </SidebarProvider>
         </div>

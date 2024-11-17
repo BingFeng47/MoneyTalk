@@ -17,8 +17,8 @@ import { ThemeButtonMobile } from "./ThemeButtonMobile"
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Dashboard",
+    url: "/demo/dashboard",
     icon: Home,
   },
   {
