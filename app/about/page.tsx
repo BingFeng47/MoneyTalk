@@ -11,7 +11,7 @@ export default function About() {
 
       <div className="container mx-auto px-4 py-16">
         <h1 className="text-4xl font-bold text-center flex mb-2 justify-center items-end ">
-          <Bird className='w-12 h-12 text-primary dark:text-white -mr-2' />
+          <Bird className='w-12 h-12 text-primary dark:text-white -mr-3' />
           <Bird className='w-6 h-6 text-primary dark:text-white opacity-75 -mr-1' />
           <Bird className='w-3 h-3 text-primary dark:text-white opacity-50 ' />
         </h1>

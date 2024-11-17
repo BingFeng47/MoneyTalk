@@ -4,11 +4,12 @@ import "./globals.css";
 import { ThemeProvider, useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Bird, Bot, Menu } from "lucide-react";
+import { Bird, Bot, GithubIcon, Menu, PresentationIcon, YoutubeIcon } from "lucide-react";
 import GoogleAnalyticsProvider from "@/components/GoogleAnalyticsProvider";
 import { ThemeButton } from "@/components/ThemeButton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ThemeButtonMobile } from "@/components/ThemeButtonMobile";
+import { Youtube } from "@/components/Youtube";
 
 // Font variables
 const geistSans = localFont({
@@ -52,8 +53,8 @@ export default function RootLayout({
         
           {/* Logo */}
             <a className="flex items-center justify-center" href="/">
-            <Bird className="h-8 w-8 text-[#682bd7] dark:text-white" />
-            <h1 className="text-xl px-2 text-primary font-extrabold ">Money<span className="font-bold text-xl text-secondary-foreground">Talk</span></h1>
+              <Bird className="h-8 w-8 text-[#682bd7] dark:text-white" />
+              <h1 className="text-xl px-2 text-primary font-extrabold ">Money<span className="font-bold text-xl text-secondary-foreground">Talk</span></h1>
             </a>
             
           
@@ -61,31 +62,31 @@ export default function RootLayout({
             <nav className="ml-auto gap-2 lg:gap-4 items-center hidden md:flex">
             
             <Link href={"/"}>
-              <Button variant={"ghost"} className="text-md py-5">
+              <Button variant={"ghost"} className="text-md py-5 hover:bg-primary hover:text-primary-foreground">
                 Home
               </Button>
             </Link>
 
             <Link href={"/about"}>
-              <Button variant={"ghost"} className="text-md py-5">
+              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               About Us
               </Button>
             </Link>
 
             <Link href={"/docs"}>
-              <Button variant={"ghost"} className="text-md py-5">
+              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
                 How It Works
               </Button>
             </Link>
 
             <Link href={"/"}>
-              <Button variant={"ghost"} className="text-md py-5">
+              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               GitHub
               </Button>
             </Link>
 
             <Link href={"/"}>
-              <Button variant={"ghost"} className="text-md py-5">
+              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               YouTube
               </Button>
             </Link>
@@ -159,11 +160,14 @@ export default function RootLayout({
 
         {children}
 
-        <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-          <p className="text-sm text-gray-500 dark:text-gray-400">© MoneyTalk PayHack Hackathon 2024. All rights reserved.</p>
+        <footer className="flex flex-col md:flex-row gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+          <p className="text-sm text-gray-500 dark:text-gray-400 hidden sm:block">© MoneyTalk PayHack Hackathon 2024. All rights reserved.</p>
           <nav className="sm:ml-auto flex gap-4 sm:gap-6">
-
+            <GithubIcon className="hover:cursor-pointer text-primary dark:text-white" />
+            <YoutubeIcon className="hover:cursor-pointer text-primary dark:text-white"/>
+            <PresentationIcon className="hover:cursor-pointer text-primary dark:text-white"/>
           </nav>
+          <p className="text-sm text-gray-500 dark:text-gray-400 sm:hidden">© MoneyTalk PayHack Hackathon 2024. All rights reserved.</p>
         </footer>
       </ThemeProvider>
 
