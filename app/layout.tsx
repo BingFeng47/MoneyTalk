@@ -5,8 +5,8 @@ import { ThemeProvider } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Bird, Bot, Menu } from "lucide-react";
-import GoogleAnalyticsProvider from "@/components/ui/GoogleAnalyticsProvider";
-import { ThemeButton } from "@/components/ui/ThemeButton";
+import GoogleAnalyticsProvider from "@/components/GoogleAnalyticsProvider";
+import { ThemeButton } from "@/components/ThemeButton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 // Font variables
