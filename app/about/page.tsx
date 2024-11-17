@@ -24,7 +24,7 @@ export default function About() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8  md:px-20">
           <Card className='border-primary bg-card'>
             <CardContent className="p-6">
               <div className="flex flex-col items-center">
@@ -39,7 +39,7 @@ export default function About() {
           <h2 className="text-lg lg:text-3xl font-semibold mb-2">Calvin Koay</h2>
           <caption className='text-xs -mt-2 pb-2 text-muted-foreground'>rjhong_92@hotmail.com</caption>
           <p className="text-muted-foreground mb-4 text-xs">Product Manager</p>
-          <p className="text-center text-xs lg:text-sm">
+          <p className="text-center text-sm ">
             Calvin brings over 10 years of industry experience and a passion for innovation. 
             His leadership drives our team to push boundaries and achieve excellence.
           </p>
@@ -62,7 +62,7 @@ export default function About() {
               <h2 className="text-lg lg:text-3xl font-semibold mb-2">Bing Feng</h2>
               <caption className='text-xs -mt-1 pb-2 text-muted-foreground'>limbingfeng000407@gmail.com</caption>
               <p className="text-muted-foreground mb-4 text-xs">Developer</p>
-              <p className="text-center text-xs lg:text-sm">
+              <p className="text-center text-sm">
               Bing is a tech visionary with a knack for solving complex problems. 
               His expertise in cutting-edge technologies keeps us at the forefront of innovation.
               </p>
@@ -84,7 +84,7 @@ export default function About() {
               <h2 className="text-lg lg:text-3xl font-semibold mb-2">Chee Yee</h2>
               <caption className='text-xs -mt-1 pb-2 text-muted-foreground'>cheeyee721@gmail.com</caption>
               <p className="text-muted-foreground mb-4 text-xs">Designer</p>
-              <p className="text-center text-xs lg:text-sm">
+              <p className="text-center text-sm">
               Chee Yee is a creative genius with a passion for design. 
               Her expertise ensures that every product is both visually appealing and easy to navigate.
               </p>
