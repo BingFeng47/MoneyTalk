@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import "../globals.css";
 import { ThemeProvider, useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -11,10 +11,44 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { ThemeButtonMobile } from "@/components/ThemeButtonMobile";
 import { Youtube } from "@/components/Youtube";
 
+// Font variables
+const geistSans = localFont({
+  src: "./../fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./../fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
-export default function Home() {
+// Website metadata
+export const metadata: Metadata = {
+  title: "MoneyTalk",
+  description: "Say it, MoneyTalk does it — your personal finance ally.",
+  icons: {
+    icon: '/bird.svg', 
+  },
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div>
+    <html lang="en">
+      <GoogleAnalyticsProvider/>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      
+      <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+      >
+        {/* Header */}
         <header className="px-4 lg:px-6 h-20 flex items-center sticky top-0 z-50 bg-secondary pt-1">
         
           {/* Logo */}
@@ -119,12 +153,12 @@ export default function Home() {
                     </div>
                   </DropdownMenuContent>
               </DropdownMenu>
+              
             </div>
+
         </header>
 
-        {/* Content */}
-        <div className="h-screen">
-        </div>
+        {children}
 
         <footer className="flex flex-col md:flex-row gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
           <p className="text-sm text-gray-500 dark:text-gray-400 hidden sm:block">© MoneyTalk PayHack Hackathon 2024. All rights reserved.</p>
@@ -135,6 +169,9 @@ export default function Home() {
           </nav>
           <p className="text-sm text-gray-500 dark:text-gray-400 sm:hidden">© MoneyTalk PayHack Hackathon 2024. All rights reserved.</p>
         </footer>
-    </div>
+      </ThemeProvider>
+
+      </body>
+    </html>
   );
 }

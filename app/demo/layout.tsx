@@ -1,15 +1,14 @@
-// app/dashboard/layout.js
+// app/demo/layout.js
 import { AppSidebar } from '@/components/AppSideBar';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { ReactNode } from 'react';
 
-interface DashboardLayoutProps {
-  children: ReactNode;
-}
-
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default function DemoLayout({
+    children,
+  }: Readonly<{
+    children: React.ReactNode;
+  }>) {
     return (
-        <body className='h-screen'>
+        <div className='h-screen'>
             <SidebarProvider>
             <AppSidebar />
             <main>
@@ -17,6 +16,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 {children}
             </main>
             </SidebarProvider>
-        </body>
+        </div>
     );
   }
