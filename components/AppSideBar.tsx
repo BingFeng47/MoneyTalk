@@ -94,25 +94,6 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Security</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
         
 
         {/* Profile */}
@@ -133,7 +114,9 @@ export function AppSidebar() {
                         </div>
                     </div>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="bg-background border border-primary rounded-lg" side="right">
+
+                
+                <DropdownMenuContent className="bg-background border border-primary rounded-lg ml-2" side="top">
                     <DropdownMenuLabel className="px-10 py-2">
                     <div className="flex w-full items-center gap-4">
                         <div>
