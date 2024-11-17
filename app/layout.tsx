@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   title: "MoneyTalk",
   description: "Say it, MoneyTalk does it — your personal finance ally.",
   icons: {
-    icon: '/bird.svg',
+    icon: '/bird.svg', 
   },
 };
 
