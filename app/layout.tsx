@@ -78,7 +78,7 @@ export default function RootLayout({
             
             <Link href={"/players"}>
               <Button variant={"default"} className="lg:text-sm py-5 font-bold">
-              Try it Out
+              Lets Talk!
               </Button>
             </Link>
 
