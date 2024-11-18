@@ -1,4 +1,4 @@
-import { Bird, Calendar, ChevronsUpDown, Home, Inbox, LogOut, Search, Settings } from "lucide-react"
+import { Bird, Bot, Calendar, ChevronsUpDown, Goal, Home, Inbox, LogOut, Search, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -22,19 +22,19 @@ const items = [
     icon: Home,
   },
   {
-    title: "Inbox",
+    title: "Goals",
     url: "#",
+    icon: Goal,
+  },
+  {
+    title: "Inbox",
+    url: "/demo",
     icon: Inbox,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "MoneyTalk",
+    url: "/demo",
+    icon: Bot,
   },
   {
     title: "Settings",
@@ -61,24 +61,6 @@ export function AppSidebar() {
         {/* Features */}
         <SidebarGroup>
           <SidebarGroupLabel>Features</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Bot</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

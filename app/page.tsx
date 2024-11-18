@@ -45,13 +45,13 @@ export default function Home() {
               </Button>
             </Link>
 
-            <Link href={"/"}>
+            <Link href={"/docs"}>
               <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               GitHub
               </Button>
             </Link>
 
-            <Link href={"/"}>
+            <Link href={"/docs"}>
               <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               YouTube
               </Button>
@@ -60,7 +60,7 @@ export default function Home() {
             </nav>
 
             <nav className="ml-auto gap-2 lg:gap-4 items-center hidden md:flex">
-              <Link href={"/demo"}>
+              <Link href={"/demo/dashboard"}>
                 <Button variant={"default"} className="lg:text-sm py-5 font-bold">
                 Try Now!
                 </Button>
@@ -107,7 +107,7 @@ export default function Home() {
                       </Link>
 
                       
-                      <Link href={"/demo"}>
+                      <Link href={"/demo/dashboard"}>
                         <Button variant={"default"} className="lg:text-sm font-bold w-full">
                           Lets Talk!
                         </Button>
