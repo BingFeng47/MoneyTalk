@@ -10,6 +10,7 @@ import { ThemeButton } from "@/components/ThemeButton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { ThemeButtonMobile } from "@/components/ThemeButtonMobile";
 import { Youtube } from "@/components/Youtube";
+import { Testimonials } from "@/components/landing/Testimonials";
 
 
 export default function Home() {
@@ -123,7 +124,8 @@ export default function Home() {
         </header>
 
         {/* Content */}
-        <div className="h-screen">
+        <div className="h-screen -z-10">
+          <Testimonials/>
         </div>
 
         <footer className="flex flex-col md:flex-row gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">

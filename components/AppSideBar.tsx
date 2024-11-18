@@ -23,17 +23,17 @@ const items = [
   },
   {
     title: "Goals",
-    url: "#",
+    url: "/demo/goals",
     icon: Goal,
   },
   {
     title: "Inbox",
-    url: "/demo",
+    url: "/demo/inbox",
     icon: Inbox,
   },
   {
     title: "MoneyTalk",
-    url: "/demo",
+    url: "/demo/chatbot",
     icon: Bot,
   },
   {
