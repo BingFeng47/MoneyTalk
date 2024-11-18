@@ -1,4 +1,4 @@
-import { PersonalFinanceDashboardComponent } from '@/components/demo/pfm'
+import { PersonalFinanceDashboardComponent } from '@/components/demo/PFM'
 import React from 'react'
 
 function dashboard() {
