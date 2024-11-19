@@ -17,7 +17,7 @@ import {
 
 // Mock data for the dashboard
 const accountOverview = {
-  balance: 28055.88,
+  balance: 8055.00,
   income: 8008,
   expenses: 6800,
   savings: 1208
@@ -109,7 +109,7 @@ export function Dashboard() {
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM{accountOverview.balance.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {accountOverview.balance.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +2.5% from last month
                         </p>
@@ -121,7 +121,7 @@ export function Dashboard() {
                         <ArrowUpIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM{accountOverview.income.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {accountOverview.income.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +5% from last month
                         </p>
@@ -133,7 +133,7 @@ export function Dashboard() {
                         <ArrowDownIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM{accountOverview.expenses.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {accountOverview.expenses.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +12% from last month
                         </p>
@@ -145,7 +145,7 @@ export function Dashboard() {
                         <Wallet className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM{accountOverview.savings.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {accountOverview.savings.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +7% from last month
                         </p>
