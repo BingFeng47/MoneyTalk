@@ -69,6 +69,12 @@ export default function RootLayout({
 
             <Link href={"/about"}>
               <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
+              AI Chat
+              </Button>
+            </Link>
+
+            <Link href={"/about"}>
+              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               About Us
               </Button>
             </Link>
@@ -76,18 +82,6 @@ export default function RootLayout({
             <Link href={"/docs"}>
               <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
                 How It Works
-              </Button>
-            </Link>
-
-            <Link href={"/docs"}>
-              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
-              GitHub
-              </Button>
-            </Link>
-
-            <Link href={"/docs"}>
-              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
-              YouTube
               </Button>
             </Link>
 
@@ -116,6 +110,12 @@ export default function RootLayout({
                         </Button>
                       </Link>
 
+                      <Link href={"/"}>
+                        <Button variant={"outline"} className="lg:text-sm w-full">
+                          AI Chat
+                        </Button>
+                      </Link>
+
                       <Link href={"/about"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
                           About Us
@@ -127,20 +127,7 @@ export default function RootLayout({
                           How It Works
                         </Button>
                       </Link>
-                      
-                      <Link href={"/docs"}>
-                        <Button variant={"outline"} className="lg:text-sm w-full">
-                          GitHub
-                        </Button>
-                      </Link>
-
-                      <Link href={"/docs"}>
-                        <Button variant={"outline"} className="lg:text-sm w-full">
-                          YouTube
-                        </Button>
-                      </Link>
-
-                      
+                                           
                       <Link href={"/demo/dashboard"}>
                         <Button variant={"default"} className="lg:text-sm font-bold w-full">
                           Lets Talk!

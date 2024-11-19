@@ -34,6 +34,12 @@ export default function Home() {
               </Button>
             </Link>
 
+            <Link href={"/"}>
+              <Button variant={"ghost"} className="text-md py-5 hover:bg-primary hover:text-primary-foreground">
+                AI Chat
+              </Button>
+            </Link>
+
             <Link href={"/about"}>
               <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               About Us
@@ -46,17 +52,6 @@ export default function Home() {
               </Button>
             </Link>
 
-            <Link href={"/docs"}>
-              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
-              GitHub
-              </Button>
-            </Link>
-
-            <Link href={"/docs"}>
-              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
-              YouTube
-              </Button>
-            </Link>
 
             </nav>
 
@@ -82,6 +77,12 @@ export default function Home() {
                           Home
                         </Button>
                       </Link>
+                      
+                      <Link href={"/"}>
+                        <Button variant={"outline"} className="lg:text-sm w-full">
+                          AI Chat
+                        </Button>
+                      </Link>
 
                       <Link href={"/about"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
@@ -92,18 +93,6 @@ export default function Home() {
                       <Link href={"/docs"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
                           How It Works
-                        </Button>
-                      </Link>
-                      
-                      <Link href={"/docs"}>
-                        <Button variant={"outline"} className="lg:text-sm w-full">
-                          GitHub
-                        </Button>
-                      </Link>
-
-                      <Link href={"/docs"}>
-                        <Button variant={"outline"} className="lg:text-sm w-full">
-                          YouTube
                         </Button>
                       </Link>
 
@@ -124,7 +113,7 @@ export default function Home() {
         </header>
 
         {/* Content */}
-        <div className="h-screen -z-10">
+        <div className="h-screen">
           <Testimonials/>
         </div>
 
