@@ -150,21 +150,10 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
           </div>
         ))}
       {loading && (
-        <div className="mb-2 self-end bg-primary text-white px-4 py-2 rounded-lg flex gap-2 items-center">
+        <div className="mb-2 self-end text-primary px-4 py-2 rounded-lg flex gap-2 justify-center items-center">
           <div className={`py-2 rounded-lg flex gap-4 items-center`}>
-            <div className="flex-shrink-0 self-start">
-              <Bot className="text-white" size={20} />
-            </div>
             <div className="flex-grow">
-              {(() => {
-                const messages = [
-                  "Hold on… My robot brain needs a moment!",
-                  "Thinking… I’ll be right back with a genius response!",
-                  "Decoding your request…🔍"
-                ];
-                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-                return <span className="animate-pulse">{randomMessage}</span>;
-              })()}
+              <span className="animate-pulse">Hold on… My robot brain needs a moment!</span>
             </div>
           </div>
         </div>
