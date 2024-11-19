@@ -30,7 +30,7 @@ export default function DemoLayout({
                     <Bot size={28} className='text-white'/>
                   </div>
                   )}
-              <SidebarTrigger/>
+                <SidebarTrigger className='fixed '/>
               { botVisible?
                 <ResizablePanelGroup direction="horizontal">
                   <ResizablePanel>{children}</ResizablePanel>
