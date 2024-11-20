@@ -1,15 +1,14 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import React, { useState } from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowDownIcon, ArrowUpIcon, ArrowUpRight, Check, DollarSign, Edit2, GoalIcon, Plus, Repeat, Trash, Wallet, Wallet2 } from 'lucide-react'
+import { ArrowUpRight, Check, GoalIcon, Plus, Repeat, Wallet2 } from 'lucide-react'
 
 
 export default function Goal() {
   const goals = [
-    { id: 1, title: 'Australia Trip', description: 'Save $50,000 for a down payment by 2025', url:'/goals/australia.jpg', completed: true },
-    { id: 2, title: 'House Upfront', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/house.jpg', completed: false  },
-    { id: 3, title: 'Tesla Model 3', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/tesla.jpg', completed: false },
+    { id: 1, title: 'Australia Trip', description: 'Save $50,000 for a down payment by 2025', url:'/goals/australia.jpg', completed: true, target: 5000, current: 5000 },
+    { id: 2, title: 'House Upfront', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/house.jpg', completed: false, target: 5000, current: 1000 },
+    { id: 3, title: 'Tesla Model 3', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/tesla.jpg', completed: false, target: 5000, current: 3000 },
   ]
 
     // Mock data for the dashboard
@@ -88,15 +87,16 @@ export default function Goal() {
             <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
             {goals.map(goal => (
               <Card key={goal.id} className="relative group">
-                <CardHeader className='p-4'>
+                <CardHeader className='px-4 pb-2'>
                   <img src={goal.url} alt={goal.title} className="w-full pb-2 h-40 object-cover rounded-lg" />
                   <CardTitle>{goal.title}</CardTitle>
+                  <p className='text-muted-foreground text-xs'>RM {goal.current} / RM {goal.target}</p>
                 </CardHeader>
 
                 <CardContent className='pt-0 px-4'>
                 <div className="relative w-full h-2.5">
                   <div className="absolute inset-0 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                  <div className="absolute inset-0 bg-primary rounded-full" style={{ width: '20%' }}></div>
+                  <div className="absolute inset-0 bg-primary rounded-full" style={{ width: (goal.current / goal.target) * 100 + '%' }}></div>
                 </div>
                 </CardContent>
 
