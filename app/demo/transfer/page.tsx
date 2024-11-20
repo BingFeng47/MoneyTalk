@@ -127,7 +127,7 @@ export default function Transfer() {
                   <Card>
                     <CardHeader>
                       <CardTitle>Transfer Funds</CardTitle>
-                      <CardDescription>Perform Transaction Action for Demo</CardDescription>
+                      <CardDescription>Perform Debit Action for Demo</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-2">
                         <div className="space-y-4">
@@ -200,10 +200,10 @@ export default function Transfer() {
                   <Card>
                     <CardHeader>
                       <CardTitle>Receive Funds</CardTitle>
-                      <CardDescription>Receive money from another account</CardDescription>
+                      <CardDescription>Perform Credit Action for Demo</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-2">
-                      <div className="space-y-1">
+                      <div className="space-y-4">
                       <Label>Description</Label>
                         <Input 
                           id="description" 
