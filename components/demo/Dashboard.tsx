@@ -18,7 +18,7 @@ import {
 // Mock data for the dashboard
 const accountOverview = {
   balance: 8055.00,
-  income: 8008,
+  pocket_balance: 2800,
   expenses: 6800,
   savings: 1208
 }
@@ -117,11 +117,11 @@ export function Dashboard() {
                         </Card>
                         <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Income</CardTitle>
+                        <CardTitle className="text-sm font-medium">Pocket Balance</CardTitle>
                         <ArrowUpIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.income.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {accountOverview.pocket_balance.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +5% from last month
                         </p>

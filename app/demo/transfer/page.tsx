@@ -77,7 +77,7 @@ export default function Transfer() {
                         <ArrowUpRight className="mr-2 h-4 w-4" /> Transfer
                       </Button>
                     </CardFooter>
-                    <div className="mt-6 p-4">
+                    <div className="p-4">
                       <h3 className="text-lg font-semibold mb-2">Quick Access</h3>
                       <div className="grid grid-cols-3 gap-2">
                         <Button variant="outline" className="flex flex-col items-center p-10">
