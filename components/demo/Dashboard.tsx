@@ -1,8 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 import { ArrowDownIcon, ArrowUpIcon, DollarSign, CreditCard, Wallet, PieChart, ArrowRightLeft, AlertCircle, Cannabis, Leaf, Sprout, Clover } from 'lucide-react'
-
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { TabsContent, Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -14,6 +13,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { useSupabase } from '@/app/demo/layout'
+import Transaction from './Transaction'
+import Overview from './Overview'
+
 
 // Mock data for the dashboard
 const accountOverview = {
@@ -41,17 +44,43 @@ const savingsGoalData = [
   { name: 'Jun', actual: 1300, target: 600 },
 ]
 
-const recentTransactions = [
-  { id: 1, description: 'Grocery Store', amount: -75.50, date: '2023-06-15', category: 'Food' },
-  { id: 2, description: 'Salary Deposit', amount: 3000, date: '2023-06-14', category: 'Income' },
-  { id: 3, description: 'Electric Bill', amount: -120, date: '2023-06-13', category: 'Utilities' },
-  { id: 4, description: 'Online Shopping', amount: -59.99, date: '2023-06-12', category: 'Shopping' },
-  { id: 5, description: 'Restaurant', amount: -45, date: '2023-06-11', category: 'Food' },
-]
+interface transaction{
+    id: number,
+    user_id: number,
+    date: string,
+    amount: number,
+    transaction_type: string,
+    description: string,
+    category: string,
+    payment_method: string,
+}
+
 
 export function Dashboard() {
-  const [selectedAccount, setSelectedAccount] = useState('all')
-  const [activeTab, setActiveTab] = useState("overview");
+    // Supabase
+    const supabase = useSupabase(); // Access the Supabase client
+    const [transactions, setTransactions] = useState<transaction[]>([])
+
+    // State
+    const [selectedAccount, setSelectedAccount] = useState('all')
+    const [activeTab, setActiveTab] = useState("overview");
+
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            const { data, error } = await supabase
+                .from('transactions')
+                .select('*')
+                .order('date', { ascending: false })
+
+            if (error) {
+                console.error('Error fetching transactions:', error)
+            } else {
+                setTransactions(data)
+            }
+        }
+
+        fetchTransactions()
+    }, [supabase])
 
   return (
     <div className='w-full'>
@@ -100,171 +129,13 @@ export function Dashboard() {
                     <TabsTrigger value="reports">Reports</TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview" className="space-y-4">
-                    <div className="grid gap-4 auto-rows-fr md:grid-cols-2 lg:grid-cols-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
-                        <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">
-                        Total Balance
-                        </CardTitle>
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.balance.toFixed(2)}</div>
-                        <p className="text-xs text-muted-foreground">
-                        +2.5% from last month
-                        </p>
-                        </CardContent>
-                        </Card>
-                        <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Pocket Balance</CardTitle>
-                        <ArrowUpIcon className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.pocket_balance.toFixed(2)}</div>
-                        <p className="text-xs text-muted-foreground">
-                        +5% from last month
-                        </p>
-                        </CardContent>
-                        </Card>
-                        <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Expenses</CardTitle>
-                        <ArrowDownIcon className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.expenses.toFixed(2)}</div>
-                        <p className="text-xs text-muted-foreground">
-                        +12% from last month
-                        </p>
-                        </CardContent>
-                        </Card>
-                        <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Savings</CardTitle>
-                        <Wallet className="h-4 w-4 text-muted-foreground" />
-                        </CardHeader>
-                        <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.savings.toFixed(2)}</div>
-                        <p className="text-xs text-muted-foreground">
-                        +7% from last month
-                        </p>
-                        </CardContent>
-                        </Card>
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))' }}>
-                        <Card className="col-span-4">
-                        <CardHeader>
-                        <CardTitle>Spending Overview</CardTitle>
-                        </CardHeader>
-                        <CardContent className="pl-2">
-                        <ResponsiveContainer width="100%" height={350}>
-                        <BarChart data={spendingData}>
-                            <XAxis
-                            dataKey="category"
-                            stroke="#777777"
-                            fontSize={12}
-                            tickLine={false}
-                            axisLine={false}
-                            />
-                            <YAxis
-                            stroke="#777777"
-                            fontSize={12}
-                            tickLine={false}
-                            axisLine={false}
-                            tickFormatter={(value) => `RM${value}`}
-                            />
-                            <Bar dataKey="amount" fill="#682bd7" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                        </ResponsiveContainer>
-                        </CardContent>
-                        </Card>
-                        <Card className="col-span-4 sm:col-span-3">
-                        <CardHeader>
-                        <CardTitle>Recent Transactions</CardTitle>
-                        <CardDescription>
-                        You made 12 transactions this month.
-                        </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                        <div className="space-y-8">
-                        {recentTransactions.map((transaction) => (
-                            <div key={transaction.id} className="flex items-center">
-                            <Avatar className="h-9 w-9">
-                            {/* <AvatarImage src="/avatars/01.png" alt="Avatar" /> */}
-                            <AvatarFallback>{transaction.category[0]}</AvatarFallback>
-                            </Avatar>
-                            <div className="ml-4 space-y-1">
-                            <p className="text-sm font-medium leading-none">{transaction.description}</p>
-                            <p className="text-sm text-muted-foreground">
-                            {transaction.date}
-                            </p>
-                            </div>
-                            <div className={`ml-auto font-medium RM{transaction.amount > 0 ? 'text-green-500' : 'text-red-500'}`}>
-                            {transaction.amount > 0 ? '+' : '-'}RM{Math.abs(transaction.amount).toFixed(2)}
-                            </div>
-                            </div>
-                        ))}
-                        </div>
-                        </CardContent>
-                        </Card>
-                    </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))' }}>
-                        <Card className="col-span-4">
-                        <CardHeader>
-                        <CardTitle>Savings Goal Progress</CardTitle>
-                        </CardHeader>
-                        <CardContent className="pl-2">
-                        <ResponsiveContainer width="100%" height={350}>
-                        <LineChart data={savingsGoalData}>
-                            <XAxis
-                            dataKey="name"
-                            stroke="#888888"
-                            fontSize={12}
-                            tickLine={false}
-                            axisLine={false}
-                            />
-                            <YAxis
-                            stroke="#888888"
-                            fontSize={12}
-                            tickLine={false}
-                            axisLine={false}
-                            tickFormatter={(value) => `RM${value}`}
-                            />
-                            <Line type="monotone" dataKey="actual" stroke="#8884d8" strokeWidth={2} />
-                            <Line type="monotone" dataKey="target" stroke="#82ca9d" strokeWidth={2} strokeDasharray="5 5" />
-                        </LineChart>
-                        </ResponsiveContainer>
-                        </CardContent>
-                        </Card>
-                        <Card className="col-span-4 sm:col-span-3">
-                        <CardHeader>
-                        <CardTitle>Financial Insights</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                        <div className="space-y-4">
-                        <div className="flex items-center">
-                            <AlertCircle className="mr-2 h-4 w-4 text-yellow-500" />
-                            <p className="text-sm">Your dining out expenses are 15% higher than last month.</p>
-                        </div>
-                        <div className="flex items-center">
-                            <ArrowUpIcon className="mr-2 h-4 w-4 text-green-500" />
-                            <p className="text-sm">You're on track to meet your savings goal this month!</p>
-                        </div>
-                        <div className="flex items-center">
-                            <CreditCard className="mr-2 h-4 w-4 text-blue-500" />
-                            <p className="text-sm">Consider paying off your credit card balance to avoid interest.</p>
-                        </div>
-                        </div>
-                        </CardContent>
-                        <CardFooter>
-                        <Button className="w-full" onClick={() => setActiveTab("analytics")}>
-                        <PieChart className="mr-2 h-4 w-4" /> View Detailed Analysis
-                        </Button>
-                        </CardFooter>
-                        </Card>
-                    </div>
+                    <Overview accountOverview={accountOverview} setActiveTab={setActiveTab} spendingData={spendingData} recentTransactions={transactions} savingsGoalData={savingsGoalData}/>
                 </TabsContent>
+
+                <TabsContent value="transaction" className="space-y-4">
+                    <Transaction/>
+                </TabsContent>
+
             </Tabs>
       </div>
     </div>

@@ -2,13 +2,30 @@
 'use client'
 import { AppSidebar } from '@/components/AppSideBar';
 import Chatbot from '@/components/bot/Chatbot';
-import { AlertDialogFooter, AlertDialogHeader } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Bot } from 'lucide-react';
-import { useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
+
+// Create a context for the Supabase client
+import { SupabaseClient } from '@supabase/supabase-js';
+
+const SupabaseContext = createContext<SupabaseClient | null>(null);
+
+// Supabase Provider Component
+import { ReactNode } from 'react';
+
+const SupabaseProvider = ({ children }: { children: ReactNode }) => {
+  const supabase = useMemo(() => createClientComponentClient(), []);
+
+  return (
+    <SupabaseContext.Provider value={supabase}>
+      {children}
+    </SupabaseContext.Provider>
+  );
+};
 
 export default function DemoLayout({
     children,
@@ -29,7 +46,7 @@ export default function DemoLayout({
             <AppSidebar />
             <main className='w-screen'>
                   {!botVisible && (
-                  <div className='hidden  bg-primary rounded-xl fixed bottom-6 right-16 p-3 sm:flex justify-center items-center shadow-xl hover:cursor-pointer' onClick={() => setBotVisible(!botVisible)}>
+                  <div className='hidden z-50  bg-primary rounded-xl fixed bottom-6 right-16 p-3 sm:flex justify-center items-center shadow-xl hover:cursor-pointer' onClick={() => setBotVisible(!botVisible)}>
                     <Bot size={28} className='text-white'/>
                   </div>
                   )}
@@ -38,12 +55,12 @@ export default function DemoLayout({
               {/* Bot */}
               { botVisible?
                 <ResizablePanelGroup direction="horizontal">
-                  <ResizablePanel>{children}</ResizablePanel>
+                  <ResizablePanel><SupabaseProvider>{children}</SupabaseProvider></ResizablePanel>
                   <ResizableHandle withHandle />
                   <ResizablePanel><Chatbot handleOnClose={handleShowAlert}/></ResizablePanel>
                 </ResizablePanelGroup>
                :
-               <div>{children}</div>
+               <div><SupabaseProvider>{children}</SupabaseProvider></div>
               }
 
               {/* Alert Dialog */}
@@ -66,3 +83,12 @@ export default function DemoLayout({
         </div>
     );
   }
+
+// Hook for consuming the Supabase client
+export const useSupabase = () => {
+  const context = useContext(SupabaseContext);
+  if (!context) {
+    throw new Error("useSupabase must be used within a SupabaseProvider");
+  }
+  return context;
+};

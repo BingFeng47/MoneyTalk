@@ -1,4 +1,4 @@
-import { ArrowLeftRight, Bird, Bot, Calendar, ChevronsUpDown, Goal, Home, Inbox, LogOut, Search, Settings } from "lucide-react"
+import { ArrowLeftRight, Bird, Bot, Calendar, ChevronsUpDown, Goal, Home, Inbox, LogOut, Search, Settings, WalletCards } from "lucide-react"
 
 import {
   Sidebar,
@@ -29,6 +29,11 @@ const items = [
     icon: ArrowLeftRight,
   },
   {
+    title: "Deposits, Loans & Cards",
+    url: "/demo/finance",
+    icon: WalletCards,
+  },
+  {
     title: "Goals",
     url: "/demo/goals",
     icon: Goal,
@@ -45,7 +50,7 @@ const items = [
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/demo/settings",
     icon: Settings,
   },
 ]
@@ -110,8 +115,8 @@ export function AppSidebar() {
                             <Image src="/about/cat.png" alt="avatar" width={40} height={40} className="rounded-full" />
                         </div>
                         <div className="flex flex-col items-start">
-                            <p>bxng</p>
-                            <p>b@example.com</p>
+                            <p>Moo Deng</p>
+                            <p>moodeng@hippy.com</p>
                         </div>
                         <div className="pl-5">
                             <ChevronsUpDown size={15}/>
@@ -127,8 +132,8 @@ export function AppSidebar() {
                             <Image src="/about/cat.png" alt="avatar" width={40} height={40} className="rounded-full" />
                         </div>
                         <div className="flex flex-col items-start">
-                            <p>bxng</p>
-                            <p>b@example.com</p>
+                            <p>Moo Deng</p>
+                            <p>moodeng@hippy.com</p>
                         </div>
 
                     </div>

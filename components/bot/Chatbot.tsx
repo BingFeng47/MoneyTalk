@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const [responses, setResponse] = useState<{ user: string; chat: string }[]>([  { user: 'bot', chat: "Let's Talk! How can I help you today?" }]);
+  const [responses, setResponse] = useState<{ user: string; chat: string }[]>([  { user: 'bot', chat: "Hi Moo Deng, let's talk! How can I help you today?" }]);
 
   // Initialize sessionId state
   const [sessionId] = useState(() => crypto.randomUUID());

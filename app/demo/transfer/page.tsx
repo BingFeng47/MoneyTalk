@@ -1,33 +1,102 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { ArrowDownLeft, ArrowUpRight, Car, CreditCard, Home, QrCode } from 'lucide-react'
 import { Label } from 'recharts'
+import { useSupabase } from '../layout'
+import { id } from 'date-fns/locale'
 
 
 export default function Transfer() {
+
+  const supabase = useSupabase()
   const [balance, setBalance] = useState(8055)
   const [transferAmount, setTransferAmount] = useState('')
   const [receiveAmount, setReceiveAmount] = useState('')
+  const [description, setDescription] = useState('')
+  const [category, setCategory] = useState('')
+  const [maxId, setMaxId] = useState(null);
 
-  const handleTransfer = (amount: number) => {
-    if (amount > 0 && amount <= balance) {
-      setBalance(prevBalance => prevBalance - amount)
-      setTransferAmount('')
-      // In a real app, you'd handle the actual transfer here
-    }
+    useEffect(() => {
+      const fetchMaxId = async () => {
+        const { data, error } = await supabase
+          .from('transactions')
+          .select('id')
+          .order('id', { ascending: false })
+          .limit(1);
+
+        if (data && data.length > 0) {
+          setMaxId(data[0].id);
+        } else {
+          setMaxId(null);
+        }
+      };
+      fetchMaxId();
+    }, [transferAmount, receiveAmount]);
+
+    const handleTransfer = async () => {
+      if (transferAmount && description && category) {
+        const { data, error } = await supabase
+          .from('transactions')
+          .insert([
+            {
+              id: maxId! + 1,
+              user_id: 2024001, // Replace with actual user ID
+              date: new Date().toISOString(),
+              amount: Number(transferAmount),
+              transaction_type: 'debit',
+              description: description,
+              category: category,
+              payment_method: 'Bank Transfer', // Replace with actual payment method
+            },
+          ]);
+
+        if (error) {
+          console.error('Error inserting transaction:', error);
+        } else {
+          setBalance(prevBalance => prevBalance - Number(transferAmount));
+          setTransferAmount('');
+          setDescription('');
+          setCategory('');
+        }
+      } else {
+        console.error('Please fill in all fields');
+      }
+  }
+    const handleReceive = async () => {
+
+      if (receiveAmount && description && category) {
+        const { data, error } = await supabase
+          .from('transactions')
+          .insert([
+            {
+              id: maxId! + 1,
+              user_id: 2024001, // Replace with actual user ID
+              date: new Date().toISOString(),
+              amount: Number(receiveAmount),
+              transaction_type: 'credit',
+              description: description,
+              category: category,
+              payment_method: 'Bank Transfer', // Replace with actual payment method
+            },
+          ]);
+
+        if (error) {
+          console.error('Error inserting transaction:', error);
+        } else {
+          setBalance(prevBalance => prevBalance + Number(transferAmount));
+          setReceiveAmount('');
+          setDescription('');
+          setCategory('');
+        }
+      } else {
+        console.error('Please fill in all fields');
+      }
   }
 
-  const handleReceive = (amount: number) => {
-    if (amount > 0) {
-      setBalance(prevBalance => prevBalance + amount)
-      setReceiveAmount('')
-      // In a real app, you'd handle the actual receive process here
-    }
-  }
 
   return (
     <div className='w-full'>
@@ -58,22 +127,53 @@ export default function Transfer() {
                   <Card>
                     <CardHeader>
                       <CardTitle>Transfer Funds</CardTitle>
-                      <CardDescription>Send money to another account</CardDescription>
+                      <CardDescription>Perform Transaction Action for Demo</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-2">
-                      <div className="space-y-1">
-                        <Label >Amount</Label>
+                        <div className="space-y-4">
+                        <Label>Description</Label>
+                        <Input 
+                          id="description" 
+                          placeholder="Description" 
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          required
+                        />
+
+                        <Label>Category</Label>
+                        <select 
+                          id="category" 
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                          className="w-full p-2 rounded-md border-muted-foreground border text-sm text-muted-foreground"
+                          required
+                        >
+                          <option value="" className=''>Select Category</option>
+                          <option value="Goals">Goals</option>
+                          <option value="Income">Income</option>
+                          <option value="Transportation">Transportation</option>
+                          <option value="Investment">Investment</option>
+                          <option value="Entertainment">Entertainment</option>
+                          <option value="Sports">Sports</option>
+                          <option value="Food & Beverages">Food & Beverages</option>
+                          <option value="Groceries">Groceries</option>
+                          <option value="Others">Others</option>
+                        </select>
+                        
+                        <Label>Amount</Label>
                         <Input 
                           id="transfer-amount" 
                           type="number" 
                           placeholder="Enter amount" 
                           value={transferAmount}
                           onChange={(e) => setTransferAmount(e.target.value)}
+                          min="1"
+                          required
                         />
-                      </div>
+                        </div>
                     </CardContent>
                     <CardFooter>
-                      <Button onClick={() => handleTransfer(Number(transferAmount))}>
+                      <Button onClick={() => handleTransfer()}>
                         <ArrowUpRight className="mr-2 h-4 w-4" /> Transfer
                       </Button>
                     </CardFooter>
@@ -104,13 +204,44 @@ export default function Transfer() {
                     </CardHeader>
                     <CardContent className="space-y-2">
                       <div className="space-y-1">
+                      <Label>Description</Label>
+                        <Input 
+                          id="description" 
+                          placeholder="Description" 
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          required
+                        />
+
+                        <Label>Category</Label>
+                        <select 
+                          id="category" 
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                          className="w-full p-2 rounded-md border-muted-foreground border text-sm text-muted-foreground"
+                          required
+                        >
+                          <option value="" className=''>Select Category</option>
+                          <option value="Goals">Goals</option>
+                          <option value="Income">Income</option>
+                          <option value="Transportation">Transportation</option>
+                          <option value="Investment">Investment</option>
+                          <option value="Entertainment">Entertainment</option>
+                          <option value="Sports">Sports</option>
+                          <option value="Food & Beverages">Food & Beverages</option>
+                          <option value="Groceries">Groceries</option>
+                          <option value="Others">Others</option>
+                        </select>
+                        
                         <Label>Amount</Label>
                         <Input 
-                          id="receive-amount" 
+                          id="transfer-amount" 
                           type="number" 
                           placeholder="Enter amount" 
                           value={receiveAmount}
                           onChange={(e) => setReceiveAmount(e.target.value)}
+                          min="1"
+                          required
                         />
                       </div>
                       <div className="my-6 pt-10 flex justify-center">
@@ -119,7 +250,7 @@ export default function Transfer() {
                       <p className="text-center text-sm text-muted-foreground">Scan this QR code to receive funds</p>
                     </CardContent>
                     <CardFooter>
-                      <Button onClick={() => handleReceive(Number(receiveAmount))}>
+                      <Button onClick={() => handleReceive()}>
                         <ArrowDownLeft className="mr-2 h-4 w-4" /> Receive
                       </Button>
                     </CardFooter>
