@@ -191,7 +191,7 @@ export function Dashboard() {
                         {recentTransactions.map((transaction) => (
                             <div key={transaction.id} className="flex items-center">
                             <Avatar className="h-9 w-9">
-                            <AvatarImage src="/avatars/01.png" alt="Avatar" />
+                            {/* <AvatarImage src="/avatars/01.png" alt="Avatar" /> */}
                             <AvatarFallback>{transaction.category[0]}</AvatarFallback>
                             </Avatar>
                             <div className="ml-4 space-y-1">

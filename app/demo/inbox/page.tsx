@@ -1,5 +1,4 @@
 'use client'
-import { Button } from '@/components/ui/button'
 import { AlertCircle, Bell, Check, Mail, Trash2, Badge } from 'lucide-react';
 import React, { useState } from 'react'
 
@@ -15,11 +14,16 @@ interface Notification {
 }
 
 const initialNotifications: Notification[] = [
-  { id: 1, type: 'message', title: 'New Message', description: 'You have a new message from Calvin', time: '5 minutes ago', read: false },
-  { id: 2, type: 'alert', title: 'System Alert', description: 'Your account password will expire in 3 days', time: '1 hour ago', read: false },
-  { id: 3, type: 'update', title: 'App Update', description: 'A new version of the app is available', time: '2 hours ago', read: false },
-  { id: 4, type: 'message', title: 'New Message', description: 'You have a new message from Bing', time: '3 hours ago', read: true },
-  { id: 5, type: 'alert', title: 'Security Alert', description: 'Unusual login activity detected', time: '1 day ago', read: true },
+  { id: 1, type: 'alert', title: 'System Alert', description: 'Unusual activity detected: RM1,200 was charged to your account at a foreign merchant. Confirm if this was you.', time: '5 minutes ago', read: false },
+  { id: 2, type: 'message', title: 'New Message', description: 'Your Netflix subscription of RM49.90 will be charged tomorrow. Review your recurring expenses in the subscriptions tab.', time: '5 minutes ago', read: false },
+  { id: 3, type: 'alert', title: 'System Alert', description: 'You’ve spent 80% of your entertainment budget this month. Consider adjusting your spending to meet your savings goals.', time: '1 hour ago', read: false },
+  { id: 4, type: 'update', title: 'New Message', description: 'Your investment in the ABC Equity Fund grew by 5.3% this quarter! View detailed insights in your portfolio.', time: '2 hours ago', read: false },
+  { id: 5, type: 'message', title: 'New Message', description: 'You have a new message from Bing', time: '3 hours ago', read: true },
+  { id: 6, type: 'message', title: 'System Alert', description: 'You spent RM350 on dining last week, 20% more than usual. See recommendations to cut costs.', time: '1 day ago', read: true },
+  { id: 7, type: 'message', title: 'New Message', description: 'Congratulations! You’re 70% closer to reaching your vacation savings goal. Add RM200 this month to stay on track.', time: '16 day ago', read: true },
+  { id: 8, type: 'message', title: 'New Message', description: 'A deposit of RM4,500 was received in your account from Maybank. Tap to view transaction details.', time: '16 day ago', read: true },
+  { id: 9, type: 'message', title: 'New Message', description: 'Your credit card bill of RM2,000 is due in 5 days. Avoid late fees by making a payment today', time: '17 day ago', read: true },
+  { id: 10, type: 'alert', title: 'Security Alert', description: 'Unusual login activity detected', time: '26 day ago', read: true },
 ]
 
 export default function Inbox() {

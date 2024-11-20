@@ -1,4 +1,4 @@
-import { Bird, Bot, Calendar, ChevronsUpDown, Goal, Home, Inbox, LogOut, Search, Settings } from "lucide-react"
+import { ArrowLeftRight, Bird, Bot, Calendar, ChevronsUpDown, Goal, Home, Inbox, LogOut, Search, Settings } from "lucide-react"
 
 import {
   Sidebar,
@@ -14,6 +14,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import Image from "next/image"
 import { ThemeButtonMobile } from "./ThemeButtonMobile"
 import React from "react"
+import Link from "next/link"
 
 // Menu items.
 const items = [
@@ -21,6 +22,11 @@ const items = [
     title: "Dashboard",
     url: "/demo/dashboard",
     icon: Home,
+  },
+  {
+    title: "Transfer & Receive",
+    url: "/demo/transfer",
+    icon: ArrowLeftRight,
   },
   {
     title: "Goals",
@@ -99,16 +105,16 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <DropdownMenu>
                 <DropdownMenuTrigger>
-                    <div className="flex w-full items-center gap-4">
+                    <div className="flex w-full items-center gap-6 pb-4">
                         <div>
-                            <Image src="/about/raze.png" alt="avatar" width={50} height={50} className="rounded-full" />
+                            <Image src="/about/cat.png" alt="avatar" width={40} height={40} className="rounded-full" />
                         </div>
                         <div className="flex flex-col items-start">
                             <p>bxng</p>
                             <p>b@example.com</p>
                         </div>
-                        <div >
-                            <ChevronsUpDown />
+                        <div className="pl-5">
+                            <ChevronsUpDown size={15}/>
                         </div>
                     </div>
                 </DropdownMenuTrigger>
@@ -118,7 +124,7 @@ export function AppSidebar() {
                     <DropdownMenuLabel className="px-10 py-2">
                     <div className="flex w-full items-center gap-4">
                         <div>
-                            <Image src="/about/raze.png" alt="avatar" width={50} height={50} className="rounded-full" />
+                            <Image src="/about/cat.png" alt="avatar" width={40} height={40} className="rounded-full" />
                         </div>
                         <div className="flex flex-col items-start">
                             <p>bxng</p>
@@ -128,16 +134,19 @@ export function AppSidebar() {
                     </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="border border-primary" />
-                    <DropdownMenuItem className="px-10 py-2 hover:bg-primary hover:text-primary-foreground hover:rounded-sm">Profile</DropdownMenuItem>
+                    <DropdownMenuItem className="px-10 py-2 hover:bg-primary hover:text-primary-foreground hover:rounded-sm">Account</DropdownMenuItem>
                     <DropdownMenuItem className="px-10 py-2 hover:bg-primary hover:text-primary-foreground hover:rounded-sm">Billing</DropdownMenuItem>
-                    <DropdownMenuItem className="px-10 py-2 hover:bg-primary hover:text-primary-foreground hover:rounded-sm">Team</DropdownMenuItem>
-                    <DropdownMenuItem className="px-10 py-2 hover:bg-primary hover:text-primary-foreground hover:rounded-sm">Subscription</DropdownMenuItem>
                     <DropdownMenuItem className="px-10 py-2 "><ThemeButtonMobile/></DropdownMenuItem>
                     <DropdownMenuSeparator className="border border-primary" />
-                    <DropdownMenuItem className="flex gap-1 justify-center items-center px-10 py-2 hover:bg-primary hover:rounded-b-lg hover:text-primary-foreground group">
-                        <LogOut className="h-4 w-4 text-bg-foreground" />
-                        <span className="text-bg-foreground ">Logout</span>
+                    
+                    {/* Logout */}
+                    <Link href="/" className="flex gap-1 justify-center items-center px-10 py-2 hover:bg-primary hover:rounded-b-lg hover:text-primary-foreground group">
+                    <DropdownMenuItem className=" flex gap-1 justify-center items-center">
+                          <LogOut className="h-4 w-4 text-bg-foreground" />
+                          <span className="text-bg-foreground ">Logout</span>
                     </DropdownMenuItem>
+                    </Link>
+
 
                 </DropdownMenuContent>
             </DropdownMenu>
