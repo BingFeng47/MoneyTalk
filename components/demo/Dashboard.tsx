@@ -100,7 +100,7 @@ export function Dashboard() {
                     <TabsTrigger value="reports">Reports</TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview" className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <div className="grid gap-4 auto-rows-fr md:grid-cols-2 lg:grid-cols-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
                         <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
@@ -152,7 +152,7 @@ export function Dashboard() {
                         </CardContent>
                         </Card>
                     </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))' }}>
                         <Card className="col-span-4">
                         <CardHeader>
                         <CardTitle>Spending Overview</CardTitle>
@@ -209,7 +209,7 @@ export function Dashboard() {
                         </CardContent>
                         </Card>
                     </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))' }}>
                         <Card className="col-span-4">
                         <CardHeader>
                         <CardTitle>Savings Goal Progress</CardTitle>

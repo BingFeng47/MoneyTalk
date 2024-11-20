@@ -98,7 +98,6 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
   const onSubmit = () => {
     if (!inputValue.trim()) return; // Prevent empty submissions
     setLoading(true); // Set loading state
-
     // Append new chat to the list with the user user
     const userChat = { user: 'user', chat: inputValue };
     const updatedResponses = [...responses, userChat];
@@ -118,7 +117,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
   }
 
   return (
-    <div className="h-[calc(100%-60px)] flex flex-col px-5">
+    <div className="h-[calc(100%-60px)] flex flex-col px-5 pt-6">
   <div className="border-2 border-muted rounded-lg h-full flex flex-col">
     {/* Header */}
     <div className="bg-primary flex justify-between items-center p-4 rounded-t-lg gap-2">
@@ -166,9 +165,9 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
     <div className="flex flex-col p-2 border-t border-muted">
 
       {/* Quick Prompt */}
-      <div className='p-2 flex flex-col'>
+      <div className='p-2 flex flex-col '>
         <p className='text-xs font-bold '>Quick Prompt</p>
-        <div className='flex gap-4 my-2 overflow-x-auto'>
+        <div className='flex gap-4 my-2 overflow-x-auto no-scrollbar sm:scrollbar'>
           <Button className='text-xs bg-inherit ' variant={'outline'} onClick={() => quickPromptSubmit('Help me create a financial goal')}>Help me create a financial goal</Button>
           <Button className='text-xs bg-inherit' variant={'outline'} onClick={() => quickPromptSubmit('Can I own a Tesla Model 3 2024?')}>Can I own a Tesla Model 3 2024?</Button>
           <Button className='text-xs bg-inherit ' variant={'outline'} onClick={() => quickPromptSubmit('Am I financially ready for a partner?')}>Am I financially ready for a partner?</Button> 
