@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { AlertCircle, ArrowDownIcon, ArrowUpIcon, CreditCard, DollarSign, PieChart, Wallet } from 'lucide-react'
 import { BarChart } from 'recharts'
@@ -6,31 +6,43 @@ import { Bar, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'rechart
 import { Avatar, AvatarFallback } from '@radix-ui/react-avatar'
 import { Button } from '../ui/button'
 import { format } from 'date-fns'
+import { useSupabase } from '@/app/demo/layout'
 
 interface OverviewProps {
-  accountOverview: {
-    balance: number;
-    pocket_balance: number;
-    expenses: number;
-    savings: number;
-  };
-  spendingData: Array<{ category: string; amount: number }>;
-  recentTransactions: Array<{
-    id: number;
+  goals: Array<{
     user_id: number;
+    title: string;
     date: string;
-    amount: number;
-    transaction_type: string;
+    target_amount: number;
+    current_amount: number;
+    completed: boolean;
     description: string;
-    category: string;
-    payment_method: string;
-}>;
+    image_url: string;
+    monthly_contribution: number;
+
+  }>;  
+
+  balance: number;
+
+  recentTransactions: Array<{
+        id: number;
+        user_id: number;
+        date: string;
+        amount: number;
+        transaction_type: string;
+        description: string;
+        category: string;
+        payment_method: string;
+    }>;
   savingsGoalData: Array<{ name: string; actual: number; target: number }>;
   setActiveTab: (tab: string) => void;
 }
 
-export default function Overview({ accountOverview, spendingData, recentTransactions, savingsGoalData, setActiveTab }: OverviewProps) {
-  return (
+
+
+export default function Overview({  goals, balance, recentTransactions, savingsGoalData, setActiveTab }: OverviewProps) {
+
+    return (
     <div className='flex flex-col gap-4'>
     <div className="grid gap-4 auto-rows-fr md:grid-cols-2 lg:grid-cols-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
                         <Card>
@@ -41,7 +53,7 @@ export default function Overview({ accountOverview, spendingData, recentTransact
                         <DollarSign className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.balance.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {balance.toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +2.5% from last month
                         </p>
@@ -53,7 +65,7 @@ export default function Overview({ accountOverview, spendingData, recentTransact
                         <ArrowUpIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.pocket_balance.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.current_amount, 0).toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +5% from last month
                         </p>
@@ -79,11 +91,11 @@ export default function Overview({ accountOverview, spendingData, recentTransact
                         </Card>
                         <Card>
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Savings</CardTitle>
+                        <CardTitle className="text-sm font-medium">Pocket Monthly Contribution</CardTitle>
                         <Wallet className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM {accountOverview.savings.toFixed(2)}</div>
+                        <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.monthly_contribution, 0).toFixed(2)}</div>
                         <p className="text-xs text-muted-foreground">
                         +7% from last month
                         </p>
@@ -97,23 +109,39 @@ export default function Overview({ accountOverview, spendingData, recentTransact
                         </CardHeader>
                         <CardContent className="pl-2">
                         <ResponsiveContainer width="100%" height={350}>
-                        <BarChart data={spendingData}>
-                            <XAxis
-                            dataKey="category"
-                            stroke="#777777"
-                            fontSize={12}
-                            tickLine={false}
-                            axisLine={false}
-                            />
-                            <YAxis
-                            stroke="#777777"
-                            fontSize={12}
-                            tickLine={false}
-                            axisLine={false}
-                            tickFormatter={(value) => `RM${value}`}
-                            />
-                            <Bar dataKey="amount" fill="#682bd7" radius={[4, 4, 0, 0]} />
-                        </BarChart>
+                                {(() => {
+                                    const combinedData = recentTransactions
+                                        .filter(transaction => transaction.transaction_type === 'debit' && new Date(transaction.date).getMonth() === new Date().getMonth())
+                                        .reduce((acc: { category: string; amount: number }[], transaction) => {
+                                            const existingCategory = acc.find(item => item.category === transaction.category);
+                                            if (existingCategory) {
+                                                existingCategory.amount += transaction.amount;
+                                            } else {
+                                                acc.push({ category: transaction.category, amount: transaction.amount });
+                                            }
+                                            return acc;
+                                        }, [])
+                                        .sort((a, b) => b.amount - a.amount); // Sort descending by amount
+                                    return (
+                                        <BarChart data={combinedData}>
+                                            <XAxis
+                                                dataKey="category"
+                                                stroke="#777777"
+                                                fontSize={12}
+                                                tickLine={false}
+                                                axisLine={false}
+                                            />
+                                            <YAxis
+                                                stroke="#777777"
+                                                fontSize={12}
+                                                tickLine={false}
+                                                axisLine={false}
+                                                tickFormatter={(value) => `RM${value}`}
+                                            />
+                                            <Bar dataKey="amount" fill="#682bd7" radius={[4, 4, 0, 0]} />
+                                        </BarChart>
+                                    );
+                                })()}
                         </ResponsiveContainer>
                         </CardContent>
                         </Card>
@@ -169,7 +197,7 @@ export default function Overview({ accountOverview, spendingData, recentTransact
                             fontSize={12}
                             tickLine={false}
                             axisLine={false}
-                            tickFormatter={(value) => `RM${value}`}
+                            tickFormatter={(value) => `RM ${value}`}
                             />
                             <Line type="monotone" dataKey="actual" stroke="#8884d8" strokeWidth={2} />
                             <Line type="monotone" dataKey="target" stroke="#82ca9d" strokeWidth={2} strokeDasharray="5 5" />

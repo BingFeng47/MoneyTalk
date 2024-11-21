@@ -1,11 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Bar, BarChart, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
-import { ArrowDownIcon, ArrowUpIcon, DollarSign, CreditCard, Wallet, PieChart, ArrowRightLeft, AlertCircle, Cannabis, Leaf, Sprout, Clover } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Cannabis, Leaf, Sprout, Clover } from 'lucide-react'
 import { TabsContent, Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Select,
   SelectContent,
@@ -16,32 +12,28 @@ import {
 import { useSupabase } from '@/app/demo/layout'
 import Transaction from './Transaction'
 import Overview from './Overview'
+import Analytics from './Analytics'
 
-
-// Mock data for the dashboard
-const accountOverview = {
-  balance: 8055.00,
-  pocket_balance: 2800,
-  expenses: 6800,
-  savings: 1208
+interface Goal {
+    user_id: number,
+    title: string,
+    date: string,
+    target_amount: number,
+    current_amount: number,
+    completed: boolean,
+    description: string,
+    image_url: string,
+    monthly_contribution: number,
 }
 
-const spendingData = [
-  { category: 'Housing', amount: 1200 },
-  { category: 'Food', amount: 500 },
-  { category: 'Transportation', amount: 300 },
-  { category: 'Utilities', amount: 200 },
-  { category: 'Entertainment', amount: 150 },
-  { category: 'Healthcare', amount: 100 },
-]
 
 const savingsGoalData = [
-  { name: 'Jan', actual: 500, target: 600 },
-  { name: 'Feb', actual: 700, target: 600 },
-  { name: 'Mar', actual: 800, target: 600 },
-  { name: 'Apr', actual: 900, target: 600 },
-  { name: 'May', actual: 1100, target: 600 },
-  { name: 'Jun', actual: 1300, target: 600 },
+  { name: 'Jun', actual: 2800, target: 3130 },
+  { name: 'Jul', actual: 3000, target: 3130 },
+  { name: 'Aug', actual: 2700, target: 3130 },
+  { name: 'Sept', actual: 4100, target: 3130 },
+  { name: 'Oct', actual: 2700, target: 3130 },
+  { name: 'Nov', actual: 3130, target: 3130 },
 ]
 
 interface transaction{
@@ -60,12 +52,16 @@ export function Dashboard() {
     // Supabase
     const supabase = useSupabase(); // Access the Supabase client
     const [transactions, setTransactions] = useState<transaction[]>([])
+    const [balance, setBalance] = useState(0)
+    const [goals, setGoals] = useState<Goal[]>([])
 
     // State
     const [selectedAccount, setSelectedAccount] = useState('all')
     const [activeTab, setActiveTab] = useState("overview");
 
     useEffect(() => {
+        
+        // Fetch transactions
         const fetchTransactions = async () => {
             const { data, error } = await supabase
                 .from('transactions')
@@ -79,6 +75,36 @@ export function Dashboard() {
             }
         }
 
+        // Fetch balance
+        const fetchBalance = async () => {
+            const { data, error } = await supabase
+                .from('user')
+                .select('balance')
+                .eq('id', 2024001)
+
+            if (error) {
+                console.error('Error fetching balance:', error)
+            } else {
+                setBalance(data[0].balance)
+            }
+        }
+
+        // Fetch goal
+        const fetchPocket = async () => {
+            const { data, error } = await supabase
+                .from('goals')
+                .select('*')
+                .eq('user_id', 2024001)
+
+            if (error) {
+                console.error('Error fetching goals:', error)
+            } else {
+                setGoals(data)
+            }
+        }
+
+        fetchPocket()
+        fetchBalance()
         fetchTransactions()
     }, [supabase])
 
@@ -124,16 +150,19 @@ export function Dashboard() {
             <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="space-y-4">
                 <TabsList>
                     <TabsTrigger value="overview">Overview</TabsTrigger>
-                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
                     <TabsTrigger value="transaction">Transactions</TabsTrigger>
-                    <TabsTrigger value="reports">Reports</TabsTrigger>
+                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview" className="space-y-4">
-                    <Overview accountOverview={accountOverview} setActiveTab={setActiveTab} spendingData={spendingData} recentTransactions={transactions} savingsGoalData={savingsGoalData}/>
+                    <Overview goals={goals} balance={balance} setActiveTab={setActiveTab} recentTransactions={transactions} savingsGoalData={savingsGoalData}/>
                 </TabsContent>
 
                 <TabsContent value="transaction" className="space-y-4">
                     <Transaction/>
+                </TabsContent>
+                
+                <TabsContent value="analytics" className="space-y-4">
+                    <Analytics/>
                 </TabsContent>
 
             </Tabs>

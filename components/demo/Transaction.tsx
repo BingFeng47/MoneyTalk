@@ -40,6 +40,8 @@ export default function Transaction() {
   const [date, setDate] = useState<Date>()
   const [transactions, setTransactions] = useState<transaction[]>([])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const itemsPerPage = 10
+  const [page, setPage] = useState(1)
 
   const categories = Array.from(new Set(transactions.map(t => t.category)))
   const filteredTransactions = transactions.filter(transaction => {
@@ -66,8 +68,8 @@ export default function Transaction() {
     }, [supabase])
 
   return (
-    <div className="container mx-auto p-4">
-      <Card>
+    <div className="container mx-auto">
+      <Card >
         <CardHeader>
           <CardTitle>Transaction History</CardTitle>
           <CardDescription>View and filter your recent transactions</CardDescription>
@@ -125,11 +127,14 @@ export default function Transaction() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredTransactions.map((transaction) => (
+              
+            {filteredTransactions
+              .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+              .map((transaction) => (
                 <TableRow key={transaction.id}>
                   <TableCell>{format(new Date(transaction.date), 'yyyy-MM-dd')}</TableCell>
                   <TableCell>{transaction.description}</TableCell>
-                  <TableCell>{transaction.category}</TableCell>
+                  <TableCell className=' '>{transaction.category}</TableCell>
                   <TableCell className=' hidden md:block'>{transaction.payment_method}</TableCell>
                   <TableCell className={`text-right ${
                     transaction.transaction_type === 'credit' ? 'text-green-600' : 'text-red-600'
@@ -140,6 +145,27 @@ export default function Transaction() {
               ))}
             </TableBody>
           </Table>
+
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+            >
+              Previous
+            </Button>
+            <span className='text-xs'>
+              Page {page} of {Math.ceil(transactions.length / itemsPerPage)}
+            </span>
+            <Button
+              variant="outline"
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={page === Math.ceil(transactions.length / itemsPerPage)}
+            >
+              Next
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

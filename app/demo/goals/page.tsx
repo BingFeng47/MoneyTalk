@@ -1,23 +1,154 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { ArrowUpRight, Check, GoalIcon, Plus, Repeat, Wallet2 } from 'lucide-react'
+import { ArrowUpRight, Check, GoalIcon, Plus, Repeat, Trash, Trash2, Wallet2 } from 'lucide-react'
+import { useSupabase } from '../layout'
+import { useEffect, useState } from 'react'
+import { AddGoal } from '@/components/goals/AddGoal'
+import { AddPocketMoney } from '@/components/goals/AddPocketMoney'
+import { Withdraw } from '@/components/goals/Withdraw'
+
+interface Goal {
+  user_id: number,
+  title: string,
+  date: string,
+  target_amount: number,
+  current_amount: number,
+  completed: boolean,
+  description: string,
+  image_url: string,
+  monthly_contribution: number,
+
+}
 
 
 export default function Goal() {
-  const goals = [
-    { id: 1, title: 'Australia Trip', description: 'Save $50,000 for a down payment by 2025', url:'/goals/australia.jpg', completed: true, target: 5000, current: 5000 },
-    { id: 2, title: 'House Upfront', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/house.jpg', completed: false, target: 5000, current: 1000 },
-    { id: 3, title: 'Tesla Model 3', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/tesla.jpg', completed: false, target: 5000, current: 3000 },
-  ]
+    const supabase = useSupabase();
+
+    const [goals, setGoals] = useState<Goal[]>([])
+    const [balance, setBalance] = useState<number>(0)
+    const [maxId, setMaxId] = useState<number | null>(null);
+
+
+    useEffect(() => {
+
+      // fetchGoals
+      const fetchGoals = async () => {
+        const { data, error } = await supabase.from('goals').select('*').eq('user_id', 2024001).order('completed', { ascending: false })
+        if (error) console.error(error)
+        if (data) setGoals(data)
+      }
+
+      const fetchUserBalance = async () => {
+        const { data, error } = await supabase
+          .from('user')
+          .select('balance')
+          .eq('id', 2024001)
+          .single();
+        if (error) console.error(error);
+        if (data) setBalance(data.balance);
+      };
+
+      fetchUserBalance();
+      fetchUserBalance()
+      fetchGoals()
+
+      // Subscribe to real-time changes in the 'goals' table
+      const subscription = supabase
+      .channel('realtime-goals') // Channel name can be anything
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'goals' },
+        (payload) => {
+          console.log('Change detected:', payload); // Debug log
+          fetchGoals(); // Re-fetch goals on any change
+        }
+      )
+      .subscribe();
+
+      const fetchLatestTransaction = async () => {
+        const { data: latestTransactionData } = await supabase
+          .from('transactions')
+          .select('id')
+          .order('id', { ascending: false })
+          .limit(1);
+  
+        if (latestTransactionData && latestTransactionData.length > 0) {
+          setMaxId(latestTransactionData[0].id + 1);
+        } else {
+          setMaxId(1);
+        }
+      };
+  
+      fetchLatestTransaction();
+
+
+      // Cleanup subscription on component unmount
+      return () => {
+        supabase.removeChannel(subscription);
+      };
+
+    }, [supabase]);
 
     // Mock data for the dashboard
     const accountOverview = {
-      balance: 2800.00,
-      total_goals: 3,
-      total_goals_completed:1,
-      total_monthly_contribution: 200
+      total_goals: goals.length,
+      total_goals_completed:goals.filter(goal => goal.completed).length,
     }
+
+    const handleDeleteGoal = async (goal: Goal) => {
+      const confirmed = window.confirm(`Are you sure you want to delete the goal "${goal.title}", the pocket money will be credited back to your account balance?`);
+      if (!confirmed) return;
+
+      const { data: userData, error: userError } = await supabase
+        .from('user')
+        .select('balance')
+        .eq('id', goal.user_id)
+        .single();
+
+      if (userError) {
+        console.error(userError);
+        return;
+      }
+
+      const newBalance = (userData.balance || 0) + goal.current_amount;
+
+      const { error: updateError } = await supabase
+        .from('user')
+        .update({ balance: newBalance })
+        .eq('id', goal.user_id);
+
+      if (updateError) {
+        console.error(updateError);
+        return;
+      }
+
+      const { data, error } = await supabase
+      .from('goals')
+      .delete()
+      .eq('title', goal.title)
+      if (error) console.error(error)
+      if (data) console.log('Goal deleted successfully')
+
+      const { error: transactionError } = await supabase
+          .from('transactions')
+          .insert([
+            {
+              id: maxId!,
+              user_id: 2024001, // Replace with actual user ID
+              date: new Date().toISOString(),
+              amount: Number(goal.current_amount),
+              transaction_type: 'credit',
+              description: `Goal Withdrawal: ${goal.title}`,
+              category: 'Goals',
+              payment_method: 'Internal Transfer', // Replace with actual payment method
+            },
+          ]);
+
+        window.location.reload();
+    }
+
+
 
 
   return (
@@ -25,8 +156,7 @@ export default function Goal() {
         <div className="flex-grow border-b py-6 sm:py-4 px-4">
             <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold pl-3 tracking-tight">Financial Goals</h1>
-            <Button className='font-bold hidden sm:block'>+ New Goal</Button>
-            <Button className='font-bold block sm:hidden'>+</Button>
+            <AddGoal />
             </div>
         </div>
         
@@ -43,7 +173,7 @@ export default function Goal() {
                   <Wallet2 className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">RM {accountOverview.balance.toFixed(2)}</div>
+                  <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.current_amount, 0).toFixed(2)}</div>
                 </CardContent>
               </Card>
               
@@ -53,7 +183,7 @@ export default function Goal() {
                   <Repeat className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">RM {accountOverview.total_monthly_contribution.toFixed(2)}</div>
+                  <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.monthly_contribution, 0).toFixed(2)}</div>
                 </CardContent>
               </Card>
 
@@ -86,38 +216,40 @@ export default function Goal() {
         <div className="px-4 space-y-4 ">
             <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
             {goals.map(goal => (
-              <Card key={goal.id} className="relative group">
-                <CardHeader className='px-4 pb-2'>
-                  <img src={goal.url} alt={goal.title} className="w-full pb-2 h-40 object-cover rounded-lg" />
-                  <CardTitle>{goal.title}</CardTitle>
-                  <p className='text-muted-foreground text-xs'>RM {goal.current} / RM {goal.target}</p>
-                </CardHeader>
-
-                <CardContent className='pt-0 px-4'>
-                <div className="relative w-full h-2.5">
-                  <div className="absolute inset-0 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                  <div className="absolute inset-0 bg-primary rounded-full" style={{ width: (goal.current / goal.target) * 100 + '%' }}></div>
+              <Card key={goal.title} className="relative group">
+              <CardHeader className='px-4 pb-2'>
+                <img src={goal.image_url} alt={goal.title} className="w-full pb-2 h-40 object-cover rounded-lg" />
+                <CardTitle>{goal.title}</CardTitle>
+                <div className='flex justify-between'>
+                <p className='text-muted-foreground text-xs'>RM {goal.current_amount} / RM {goal.target_amount}</p>
+                <p className='text-muted-foreground text-xs'>RM{goal.monthly_contribution} / month</p>
                 </div>
-                </CardContent>
+              </CardHeader>
 
-                <CardFooter className='px-4 flex justify-center  gap-2'>
+              <CardContent className='pt-0 px-4'>
+              <div className="relative w-full h-2.5">
+                <div className="absolute inset-0 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                <div className="absolute inset-0 bg-primary rounded-full" style={{ width: (goal.current_amount / goal.target_amount) * 100 + '%' }}></div>
+              </div>
+              </CardContent>
 
-                  {goal.completed ? 
-                  <Button className='w-full ' disabled variant={'secondary'}>
-                    <Check className="mr-2 h-4 w-4" /> Completed
-                  </Button>
-                  :
-                  <Button className='w-full ' variant={'secondary'}>
-                    <Plus className="mr-2 h-4 w-4" /> Add Money
-                  </Button>
-                  }
-                  
-                  <Button className='w-full '>
-                    <ArrowUpRight className="mr-2 h-4 w-4" /> View Details
-                  </Button>
+              <CardFooter className='px-4 flex justify-center gap-2'>
+                {goal.completed ? 
+                <Button className='w-full' disabled variant={'secondary'}>
+                <Check className="mr-2 h-4 w-4" /> Completed
+                </Button>
+                :
+                <AddPocketMoney goal={goal} balance={balance}/>
+                }
+                
+                <Button className='w-full'>
+                <Withdraw goal={goal} balance={balance}/>
+                </Button>
+              </CardFooter>
 
-                  
-                </CardFooter>
+              <Button className="absolute top-2 right-2 hidden group-hover:block" variant="destructive" onClick={() => handleDeleteGoal(goal)}>
+                <Trash2/>
+              </Button>
               </Card>
             ))}
             </div>

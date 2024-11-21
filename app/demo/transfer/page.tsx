@@ -7,13 +7,12 @@ import { Input } from "@/components/ui/input"
 import { ArrowDownLeft, ArrowUpRight, Car, CreditCard, Home, QrCode } from 'lucide-react'
 import { Label } from 'recharts'
 import { useSupabase } from '../layout'
-import { id } from 'date-fns/locale'
 
 
 export default function Transfer() {
 
   const supabase = useSupabase()
-  const [balance, setBalance] = useState(8055)
+  const [balance, setBalance] = useState(0)
   const [transferAmount, setTransferAmount] = useState('')
   const [receiveAmount, setReceiveAmount] = useState('')
   const [description, setDescription] = useState('')
@@ -34,7 +33,27 @@ export default function Transfer() {
           setMaxId(null);
         }
       };
+
+      // Fetch balance
+      const fetchBalance = async () => {
+        const { data, error } = await supabase
+            .from('user')
+            .select('balance')
+            .eq('id', 2024001)
+
+        if (error) {
+            console.error('Error fetching balance:', error)
+        } else {
+            setBalance(data[0].balance)
+        }
+      }
+
+      fetchBalance()
       fetchMaxId();
+
+      
+
+
     }, [transferAmount, receiveAmount]);
 
     const handleTransfer = async () => {
@@ -57,7 +76,7 @@ export default function Transfer() {
         if (error) {
           console.error('Error inserting transaction:', error);
         } else {
-          setBalance(prevBalance => prevBalance - Number(transferAmount));
+          updateBalance(balance - Number(transferAmount));
           setTransferAmount('');
           setDescription('');
           setCategory('');
@@ -66,9 +85,11 @@ export default function Transfer() {
         console.error('Please fill in all fields');
       }
   }
+
+
     const handleReceive = async () => {
 
-      if (receiveAmount && description && category) {
+      if (receiveAmount && description) {
         const { data, error } = await supabase
           .from('transactions')
           .insert([
@@ -79,7 +100,7 @@ export default function Transfer() {
               amount: Number(receiveAmount),
               transaction_type: 'credit',
               description: description,
-              category: category,
+              category: 'Income',
               payment_method: 'Bank Transfer', // Replace with actual payment method
             },
           ]);
@@ -87,15 +108,27 @@ export default function Transfer() {
         if (error) {
           console.error('Error inserting transaction:', error);
         } else {
-          setBalance(prevBalance => prevBalance + Number(transferAmount));
+          updateBalance(balance + Number(receiveAmount));
           setReceiveAmount('');
           setDescription('');
-          setCategory('');
         }
       } else {
         console.error('Please fill in all fields');
       }
   }
+
+  const updateBalance = async (newBalance: number) => {
+    const { data, error } = await supabase
+      .from('user')
+      .update({ balance: newBalance })
+      .eq('id', 2024001);
+
+    if (error) {
+      console.error('Error updating balance:', error);
+    } else {
+      setBalance(newBalance);
+    }
+  };
 
 
   return (
@@ -106,7 +139,7 @@ export default function Transfer() {
             </div>
         </div>
 
-        <div className="p-4 h-full">
+        <div className="p-4 h-full flex-shrink-0">
           <Card >
             <CardHeader>
               <CardTitle>Transfer or Receive Funds</CardTitle>
@@ -140,25 +173,7 @@ export default function Transfer() {
                           required
                         />
 
-                        <Label>Category</Label>
-                        <select 
-                          id="category" 
-                          value={category}
-                          onChange={(e) => setCategory(e.target.value)}
-                          className="w-full p-2 rounded-md border-muted-foreground border text-sm text-muted-foreground"
-                          required
-                        >
-                          <option value="" className=''>Select Category</option>
-                          <option value="Goals">Goals</option>
-                          <option value="Income">Income</option>
-                          <option value="Transportation">Transportation</option>
-                          <option value="Investment">Investment</option>
-                          <option value="Entertainment">Entertainment</option>
-                          <option value="Sports">Sports</option>
-                          <option value="Food & Beverages">Food & Beverages</option>
-                          <option value="Groceries">Groceries</option>
-                          <option value="Others">Others</option>
-                        </select>
+                        
                         
                         <Label>Amount</Label>
                         <Input 
@@ -170,6 +185,27 @@ export default function Transfer() {
                           min="1"
                           required
                         />
+
+                        <Label>Category</Label>
+                          <select 
+                            id="category" 
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="w-full p-2 rounded-md border-muted-foreground border text-sm text-muted-foreground"
+                            required
+                          >
+                            <option value="" className=''>Select Category</option>
+                            <option value="Goals">Goals</option>
+                            <option value="Income">Income</option>
+                            <option value="Transportation">Transportation</option>
+                            <option value="Investment">Investment</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Food & Beverages">Food & Beverages</option>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Others">Others</option>
+                          </select>
+
                         </div>
                     </CardContent>
                     <CardFooter>
@@ -179,18 +215,18 @@ export default function Transfer() {
                     </CardFooter>
                     <div className="p-4">
                       <h3 className="text-lg font-semibold mb-2">Quick Access</h3>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-3 gap-2 flex-shrink-0">
                         <Button variant="outline" className="flex flex-col items-center p-10">
-                          <Home className="h-6 w-6 mb-1" />
-                          <span className="text-xs">Houses</span>
+                          <Home className="h-8 w-8 mb-1" />
+                          <span className="text-sm">Houses</span>
                         </Button>
                         <Button variant="outline" className="flex flex-col items-center p-10">
-                          <CreditCard className="h-6 w-6 mb-1" />
-                          <span className="text-xs ">Bills</span>
+                          <CreditCard className="h-8 w8 mb-1" />
+                          <span className="text-sm ">Bills</span>
                         </Button>
                         <Button variant="outline" className="flex flex-col items-center p-10">
-                          <Car className="h-6 w-6 mb-1" />
-                          <span className="text-xs">Cars</span>
+                          <Car className="h-8 w-8 mb-1" />
+                          <span className="text-sm">Cars</span>
                         </Button>
                     </div>
               </div>
@@ -212,26 +248,6 @@ export default function Transfer() {
                           onChange={(e) => setDescription(e.target.value)}
                           required
                         />
-
-                        <Label>Category</Label>
-                        <select 
-                          id="category" 
-                          value={category}
-                          onChange={(e) => setCategory(e.target.value)}
-                          className="w-full p-2 rounded-md border-muted-foreground border text-sm text-muted-foreground"
-                          required
-                        >
-                          <option value="" className=''>Select Category</option>
-                          <option value="Goals">Goals</option>
-                          <option value="Income">Income</option>
-                          <option value="Transportation">Transportation</option>
-                          <option value="Investment">Investment</option>
-                          <option value="Entertainment">Entertainment</option>
-                          <option value="Sports">Sports</option>
-                          <option value="Food & Beverages">Food & Beverages</option>
-                          <option value="Groceries">Groceries</option>
-                          <option value="Others">Others</option>
-                        </select>
                         
                         <Label>Amount</Label>
                         <Input 
@@ -243,7 +259,9 @@ export default function Transfer() {
                           min="1"
                           required
                         />
-                      </div>
+
+                        </div>
+
                       <div className="my-6 pt-10 flex justify-center">
                         <QrCode size={150} />
                       </div>
