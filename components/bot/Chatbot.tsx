@@ -1,5 +1,5 @@
 'use client'
-import { Bird, Bot, CircleX, Loader2, Mic } from 'lucide-react'
+import { Bird, Bot, CircleX, Loader2, Mic, StopCircle } from 'lucide-react'
 import React, { useState } from 'react'
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
@@ -8,6 +8,9 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [responses, setResponse] = useState<{ user: string; chat: string }[]>([  { user: 'bot', chat: "Hi Moo Deng, let's talk! How can I help you today?" }]);
+
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
 
   // Initialize sessionId state
   const [sessionId] = useState(() => crypto.randomUUID());
@@ -91,6 +94,75 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
       setError('Network error occurred.');
       setLoading(false); // Reset loading state
       // User feedback
+    }
+  };
+
+
+  const initializeSpeechRecognition = () => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert('Speech recognition not supported in this browser.');
+      return null;
+    }
+
+    const recognitionInstance = new SpeechRecognition();
+    recognitionInstance.continuous = true;
+    recognitionInstance.interimResults = true;
+    recognitionInstance.lang = 'en-US';
+
+    recognitionInstance.onstart = () => {
+      console.log('Speech recognition started');
+      setIsListening(true);
+    };
+
+    recognitionInstance.onresult = (event) => {
+      let interimTranscript = '';
+      let finalTranscript = '';
+    
+      for (let i = 0; i < event.results.length; i++) {
+        const result = event.results[i];
+        if (result.isFinal) {
+          finalTranscript += result[0].transcript;
+        } else {
+          interimTranscript += result[0].transcript;
+        }
+      }
+    
+      console.log('Interim:', interimTranscript); // Logs while talking
+      console.log('Final:', finalTranscript);    // Logs finalized result
+    
+      setInputValue(finalTranscript || interimTranscript); // Update state
+    };
+    
+    recognitionInstance.onerror = (event) => {
+      console.error('Speech recognition error:', event);
+      alert(`Error: ${event.error}`);
+      setIsListening(false);
+    };
+
+    recognitionInstance.onend = () => {
+      console.log('Speech recognition ended');
+      setIsListening(false);
+    };
+
+    return recognitionInstance;
+  };
+
+  const startListening = () => {
+    if (!recognition) {
+      const instance = initializeSpeechRecognition();
+      setRecognition(instance);
+      if (instance) instance.start();
+    } else {
+      recognition.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognition) {
+      recognition.stop();
     }
   };
 
@@ -199,9 +271,15 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
           </div>
         ) : (
           <div className='flex gap-2'>
-            <Button onClick={() => {}} disabled={!inputValue.trim()}>
+            {!isListening?
+            <Button onClick={startListening} disabled={isListening}>
               <Mic />
             </Button>
+            :
+            <Button onClick={stopListening} disabled={!isListening}>
+              <StopCircle/>
+            </Button>
+          }
             <Button onClick={onSubmit} disabled={!inputValue.trim()}>
               Send
             </Button>
