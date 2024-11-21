@@ -45,7 +45,6 @@ export function AddGoal() {
                 .then(({ error }) => {
                     if (error) {
                         console.error('Error inserting new goal:', error);
-                        alert('Failed to add new goal. Please try again.');
                     } else {
                         console.log('New goal added successfully');
                     }
