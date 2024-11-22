@@ -12,8 +12,8 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { set } from "date-fns"
 import { useState } from 'react';
-
 
 export function AddGoal() {
 
@@ -23,42 +23,46 @@ export function AddGoal() {
   const [description, setDescription] = useState("");
   const [targetAmount, setTargetAmount] = useState<number>();  
   const [monthlyContribution, setMonthlyContribution] = useState<number>();
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control dialog visibility
 
   const handleImageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedImage(event.target.value);
+    setSelectedImage(event.target.value);
   };
-    
-    const handleAddGoal = () => {
-        if (pocketName && description && targetAmount && monthlyContribution) {
-            const newGoal = {
-                user_id: 2024001,
-                title: pocketName,
-                description: description,
-                target_amount: targetAmount,
-                monthly_contribution: monthlyContribution,
-                image_url: selectedImage,
-            };
 
-            supabase
-                .from('goals')
-                .insert([newGoal])
-                .then(({ error }) => {
-                    if (error) {
-                        console.error('Error inserting new goal:', error);
-                    } else {
-                        console.log('New goal added successfully');
-                    }
-                });
+  const handleAddGoal = () => {
+    if (pocketName && description && targetAmount && monthlyContribution) {
+      const newGoal = {
+        user_id: 2024001,
+        title: pocketName,
+        description: description,
+        target_amount: targetAmount,
+        monthly_contribution: monthlyContribution,
+        image_url: selectedImage,
+      };
 
-            // Navigate to /demo/goals
-            window.location.href = "/demo/goals";
-        } else {
-            alert("Please fill in all fields.");
-        }
+      supabase
+        .from('goals')
+        .insert([newGoal])
+        .then(({ error }) => {
+          if (error) {
+            console.error('Error inserting new goal:', error);
+          } else {
+            console.log('New goal added successfully');
+            setIsDialogOpen(false); // Close the dialog after success
+            setPocketName("");
+            setDescription("");
+            setTargetAmount(0);
+            setMonthlyContribution(0);
+            setSelectedImage("/goals/australia.jpg");
+          }
+        });
+    } else {
+      alert("Please fill in all fields.");
     }
+  };
 
   return (
-    <Dialog>
+    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
         <Button className='font-bold'>+ New Goal</Button>
       </DialogTrigger>
@@ -72,13 +76,13 @@ export function AddGoal() {
         <div className="grid gap-4 py-4">
 
           <div className="flex flex-col items-center gap-4 ">
-              <img src={selectedImage} alt="Selected Goal" className="rounded-lg object-contain" height={100} width={480}/>
-              <select id="image" onChange={handleImageChange} value={selectedImage} className="w-full border border-muted-foreground rounded-lg p-2">
-                  <option value="/goals/australia.jpg">Trip</option>
-                  <option value="/goals/house.jpg">House</option>
-                  <option value="/goals/tesla.jpg">Car</option>
-                  <option value="/goals/goals.jpg">Goals</option>
-              </select>
+            <img src={selectedImage} alt="Selected Goal" className="rounded-lg object-contain" height={100} width={480}/>
+            <select id="image" onChange={handleImageChange} value={selectedImage} className="w-full border border-muted-foreground rounded-lg p-2">
+              <option value="/goals/australia.jpg">Trip</option>
+              <option value="/goals/house.jpg">House</option>
+              <option value="/goals/tesla.jpg">Car</option>
+              <option value="/goals/goals.jpg">Goals</option>
+            </select>
           </div>
 
           <div className="grid grid-cols-4 items-center gap-4">

@@ -15,7 +15,7 @@ import { Plus } from "lucide-react"
 import { useEffect, useState } from 'react';
 
 
-export function AddPocketMoney({ goal, balance }: { goal: any, balance: number }) {
+export function AddPocketMoney({ goal, balance, account }: { goal: any, balance: number, account:string }) {
   const supabase = useSupabase();
   const [amount, setAmount] = useState<number>(1);
   const [maxId, setMaxId] = useState<number | null>(null);
@@ -59,11 +59,17 @@ export function AddPocketMoney({ goal, balance }: { goal: any, balance: number }
       .eq('title', goal.title);
 
 
-    const { error: userError } = await supabase
-      .from('user')
-      .update({ balance: balance - amount })
-      .eq('id', goal.user_id);
-
+      let updateData = {};
+      if (account.toLowerCase() === 'cimb') {
+        updateData = { cimb_balance: balance - amount };
+      } else if (account.toLowerCase() === 'maybank') {
+        updateData = { maybank_balance: balance - amount };
+      }
+  
+      const { error: userError } = await supabase
+        .from('user')
+        .update(updateData)
+        .eq('id', goal.user_id);
 
       const { error: transactionError } = await supabase
           .from('transactions')
@@ -75,6 +81,7 @@ export function AddPocketMoney({ goal, balance }: { goal: any, balance: number }
               amount: Number(amount),
               transaction_type: 'debit',
               description: `Goal: ${goal.title}`,
+              bank: account,
               category: 'Goals',
               payment_method: 'Internal Transfer', // Replace with actual payment method
             },
@@ -92,7 +99,8 @@ export function AddPocketMoney({ goal, balance }: { goal: any, balance: number }
         <DialogHeader>
           <DialogTitle>{goal.title}</DialogTitle>
           <DialogDescription className="flex flex-col">
-            <p>Available balance: RM {balance}</p>
+            <p>Current Bank: <span className="capitalize">{account}</span></p>
+             <p>Available Balance: RM {balance.toFixed(2)}</p>
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

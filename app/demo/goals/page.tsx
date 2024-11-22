@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowUpRight, Check, GoalIcon, Plus, Repeat, Trash, Trash2, Wallet2 } from 'lucide-react'
-import { useSupabase } from '../layout'
+import { useAccount, useSupabase } from '../layout'
 import { useEffect, useState } from 'react'
 import { AddGoal } from '@/components/goals/AddGoal'
 import { AddPocketMoney } from '@/components/goals/AddPocketMoney'
@@ -21,14 +21,54 @@ interface Goal {
 
 }
 
+interface User{
+  id: number,
+  name: string,
+  age: number,
+  gender: string,
+  contact: string,
+  address: string,
+  email: string,
+  balance: number,
+  cimb_balance: number,
+  maybank_balance: number,
+} 
+
 
 export default function Goal() {
     const supabase = useSupabase();
+    const {account} = useAccount();
 
+    
+    const [currentAccount, setCurrentAccount] = useState<string>(account);
     const [goals, setGoals] = useState<Goal[]>([])
     const [balance, setBalance] = useState<number>(0)
+    const [user, setUser] = useState<User | null>(null)
     const [maxId, setMaxId] = useState<number | null>(null);
+    
 
+    useEffect (() => {
+      if (account === 'all') {
+        setCurrentAccount('cimb')
+      }else if (account === 'cimb') {
+        setCurrentAccount('cimb')
+      }else{
+        setCurrentAccount('maybank')
+      }
+    },[account])
+    
+
+    // Filter information based on account
+    useEffect(() => {
+      const filteredBalance = account === 'all' 
+          ? ((user?.cimb_balance ?? 0)) 
+          : account === 'cimb' 
+          ? (user?.cimb_balance ?? 0) 
+          : (user?.maybank_balance ?? 0);
+
+
+      setBalance(filteredBalance);
+  }, [account, user]);
 
     useEffect(() => {
 
@@ -39,18 +79,21 @@ export default function Goal() {
         if (data) setGoals(data)
       }
 
-      const fetchUserBalance = async () => {
+      // Fetch User
+      const fetchUser = async () => {
         const { data, error } = await supabase
-          .from('user')
-          .select('balance')
-          .eq('id', 2024001)
-          .single();
-        if (error) console.error(error);
-        if (data) setBalance(data.balance);
-      };
+            .from('user')
+            .select('*')
+            .eq('id', 2024001)
 
-      fetchUserBalance();
-      fetchUserBalance()
+        if (error) {
+            console.error('Error fetching balance:', error)
+        } else {
+            setUser(data[0])
+        }
+    }
+
+      fetchUser();
       fetchGoals()
 
       // Subscribe to real-time changes in the 'goals' table
@@ -97,25 +140,30 @@ export default function Goal() {
     }
 
     const handleDeleteGoal = async (goal: Goal) => {
-      const confirmed = window.confirm(`Are you sure you want to delete the goal "${goal.title}", the pocket money will be credited back to your account balance?`);
+      const confirmed = window.confirm(`Are you sure you want to delete the goal "${goal.title}", the pocket money will be credited back to your ${currentAccount} balance?`);
       if (!confirmed) return;
+      const balanceField = currentAccount === 'cimb' || 'all' ? 'cimb_balance' : 'maybank_balance';
 
       const { data: userData, error: userError } = await supabase
         .from('user')
-        .select('balance')
+        .select('*')
         .eq('id', goal.user_id)
         .single();
+
+      const userBalance = userData ? userData[balanceField] : 0;
 
       if (userError) {
         console.error(userError);
         return;
       }
 
-      const newBalance = (userData.balance || 0) + goal.current_amount;
+      const newBalance = userBalance + goal.current_amount;
+
+
 
       const { error: updateError } = await supabase
         .from('user')
-        .update({ balance: newBalance })
+        .update({ [balanceField]: newBalance })
         .eq('id', goal.user_id);
 
       if (updateError) {
@@ -141,11 +189,11 @@ export default function Goal() {
               transaction_type: 'credit',
               description: `Goal Withdrawal: ${goal.title}`,
               category: 'Goals',
+              bank: currentAccount,
               payment_method: 'Internal Transfer', // Replace with actual payment method
             },
           ]);
 
-        window.location.reload();
     }
 
 
@@ -239,11 +287,11 @@ export default function Goal() {
                 <Check className="mr-2 h-4 w-4" /> Completed
                 </Button>
                 :
-                <AddPocketMoney goal={goal} balance={balance}/>
+                <AddPocketMoney goal={goal} balance={balance} account={currentAccount}/>
                 }
                 
                 <Button className='w-full'>
-                <Withdraw goal={goal} balance={balance}/>
+                <Withdraw goal={goal} balance={balance} account={currentAccount}/>
                 </Button>
               </CardFooter>
 

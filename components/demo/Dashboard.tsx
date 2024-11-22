@@ -29,7 +29,7 @@ interface User{
     balance: number,
     cimb_balance: number,
     maybank_balance: number,
-}
+} 
 
 const savingsGoalData = [
   { name: 'Jun', actual: 2800, target: 3130 },

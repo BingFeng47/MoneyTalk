@@ -15,7 +15,7 @@ import { ArrowUpRight, Plus } from "lucide-react"
 import { useEffect, useState } from 'react';
 
 
-export function Withdraw({ goal, balance }: { goal: any, balance: number }) {
+export function Withdraw({ goal, balance, account }: { goal: any, balance: number, account:string }) {
   const supabase = useSupabase();
   const [amount, setAmount] = useState<number>(1);
   const [maxId, setMaxId] = useState<number | null>(null);
@@ -50,14 +50,21 @@ export function Withdraw({ goal, balance }: { goal: any, balance: number }) {
       .from('goals')
       .update({
         current_amount: goal.current_amount - amount,
-        completed: goal.current_amount + amount >= goal.target_amount
+        completed: goal.current_amount - amount >= goal.target_amount
       })
       .eq('title', goal.title);
 
 
-    const { error: userError } = await supabase
+      let updateData = {};
+      if (account.toLowerCase() === 'cimb') {
+        updateData = { cimb_balance: balance + amount };
+      } else if (account.toLowerCase() === 'maybank') {
+        updateData = { maybank_balance: balance + amount };
+      }
+
+      const { error: userError } = await supabase
       .from('user')
-      .update({ balance: balance + amount })
+      .update(updateData)
       .eq('id', goal.user_id);
 
 
@@ -71,6 +78,7 @@ export function Withdraw({ goal, balance }: { goal: any, balance: number }) {
               amount: Number(amount),
               transaction_type: 'credit',
               description: `Goal Withdrawal: ${goal.title}`,
+              bank: account,
               category: 'Goals',
               payment_method: 'Internal Transfer', // Replace with actual payment method
             },
@@ -88,7 +96,8 @@ export function Withdraw({ goal, balance }: { goal: any, balance: number }) {
         <DialogHeader>
           <DialogTitle>{goal.title}</DialogTitle>
           <DialogDescription className="flex flex-col">
-            <p>Available withdrawal balance: RM {goal.current_amount}</p>
+            <p>Current Bank: <span className="capitalize">{account}</span></p>
+             <p>Available Withdrawal Balance: RM {balance.toFixed(2)}</p>
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
