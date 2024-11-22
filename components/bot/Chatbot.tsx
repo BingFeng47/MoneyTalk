@@ -176,6 +176,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
     setResponse(updatedResponses);
     fetchBotResponse(userChat); // Send the updated responses to the bot
     setInputValue(''); // Clear input after submitting
+    stopListening(); // Stop listening if active
   };
 
   const quickPromptSubmit = (prompt:string) => {

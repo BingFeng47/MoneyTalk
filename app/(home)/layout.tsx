@@ -69,12 +69,6 @@ export default function RootLayout({
 
             <Link href={"/about"}>
               <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
-              AI Chat
-              </Button>
-            </Link>
-
-            <Link href={"/about"}>
-              <Button variant={"ghost"} className="text-md py-5  hover:bg-primary hover:text-primary-foreground">
               About Us
               </Button>
             </Link>
@@ -107,12 +101,6 @@ export default function RootLayout({
                       <Link href={"/"}>
                         <Button variant={"outline"} className="lg:text-sm w-full">
                           Home
-                        </Button>
-                      </Link>
-
-                      <Link href={"/"}>
-                        <Button variant={"outline"} className="lg:text-sm w-full">
-                          AI Chat
                         </Button>
                       </Link>
 
