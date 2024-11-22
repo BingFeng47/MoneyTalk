@@ -1,14 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Cannabis, Leaf, Sprout, Clover } from 'lucide-react'
 import { TabsContent, Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { useSupabase } from '@/app/demo/layout'
 import Transaction from './Transaction'
 import Overview from './Overview'
@@ -26,6 +18,18 @@ interface Goal {
     monthly_contribution: number,
 }
 
+interface User{
+    id: number,
+    name: string,
+    age: number,
+    gender: string,
+    contact: string,
+    address: string,
+    email: string,
+    balance: number,
+    cimb_balance: number,
+    maybank_balance: number,
+}
 
 const savingsGoalData = [
   { name: 'Jun', actual: 2800, target: 3130 },
@@ -45,19 +49,40 @@ interface transaction{
     description: string,
     category: string,
     payment_method: string,
+    bank: string,
 }
+
 
 
 export function Dashboard({ account }: { account: string }) {
     // Supabase
     const supabase = useSupabase(); // Access the Supabase client
     const [transactions, setTransactions] = useState<transaction[]>([])
+    const [FilteredTransactions, setFilteredTransactions] = useState<transaction[]>([])
+    const [user, setUser] = useState<User>()
     const [balance, setBalance] = useState(0)
     const [goals, setGoals] = useState<Goal[]>([])
 
     // State
     const [activeTab, setActiveTab] = useState("overview");
 
+
+    // Filter information based on account
+    useEffect(() => {
+        const filteredBalance = account === 'all' 
+            ? ((user?.cimb_balance ?? 0) + (user?.maybank_balance ?? 0)) 
+            : account === 'cimb' 
+            ? (user?.cimb_balance ?? 0) 
+            : (user?.maybank_balance ?? 0);
+
+        const filteredBankTransaction = account === 'all' ? transactions : transactions.filter(transaction => transaction.bank.toLowerCase() === account.toLowerCase());
+
+        setFilteredTransactions(filteredBankTransaction)
+        setBalance(filteredBalance);
+    }, [account, user]);
+
+
+    // Fetch Data
     useEffect(() => {
         
         // Fetch transactions
@@ -74,17 +99,17 @@ export function Dashboard({ account }: { account: string }) {
             }
         }
 
-        // Fetch balance
-        const fetchBalance = async () => {
+        // Fetch User
+        const fetchUser = async () => {
             const { data, error } = await supabase
                 .from('user')
-                .select('balance')
+                .select('*')
                 .eq('id', 2024001)
 
             if (error) {
                 console.error('Error fetching balance:', error)
             } else {
-                setBalance(data[0].balance)
+                setUser(data[0])
             }
         }
 
@@ -103,15 +128,18 @@ export function Dashboard({ account }: { account: string }) {
         }
 
         fetchPocket()
-        fetchBalance()
+        fetchUser()
         fetchTransactions()
     }, [supabase])
+
+
 
   return (
     <div className='w-full'>
         <div className="flex-grow border-b py-6 sm:py-4 px-4">
             <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold pl-3 tracking-tight">Dashboard</h1>
+            <h1 className="text-3xl font-bold pl-3 tracking-tight">Dashboard </h1>
+            <p className='uppercase text-gray-400 text-sm px-6'>{account}</p>
             </div>
         </div>
 
@@ -124,7 +152,7 @@ export function Dashboard({ account }: { account: string }) {
                     <TabsTrigger value="analytics">Analytics</TabsTrigger>
                 </TabsList>
                 <TabsContent value="overview" className="space-y-4">
-                    <Overview goals={goals} balance={balance} setActiveTab={setActiveTab} recentTransactions={transactions} savingsGoalData={savingsGoalData}/>
+                    <Overview goals={goals} balance={balance} setActiveTab={setActiveTab} recentTransactions={FilteredTransactions} savingsGoalData={savingsGoalData}/>
                 </TabsContent>
 
                 <TabsContent value="transaction" className="space-y-4">

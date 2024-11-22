@@ -3,31 +3,114 @@ import Cards from '@/components/finance/Cards';
 import Deposits from '@/components/finance/Deposit';
 import Loans from '@/components/finance/Loans';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAccount, useSupabase } from '../layout';
 
+interface FixedDeposit {
+  id: string;
+  user_id: string;
+  deposit_amount: number;
+  interest_rate: number;
+  term_months: number;
+  start_date: string;
+  maturity_date: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  bank: string;
+}
+// Define the Loan type
+interface Loan {
+  id: string;
+  user_id: string;
+  amount: number;
+  interest_rate: number;
+  term_months: number;
+  start_date: string;
+  end_date: string;
+  loan_type: string;
+  status: string;
+  icon: string;
+  bank: string;
+  monthly_instalment: number;
+}
+// Define the CreditCard type
+type CreditCard = {
+  id: string;
+  user_id: string;
+  card_number: string;
+  cardholder_name: string;
+  credit_limit: number;
+  current_balance: number;
+  due_date: string;
+  interest_rate: number;
+  min_payment: number;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+  bank: string;
+}
 
 export default function Finance() {
-  const goals = [
-    { id: 1, title: 'Australia Trip', description: 'Save $50,000 for a down payment by 2025', url:'/goals/australia.jpg', completed: true, target: 5000, current: 5000 },
-    { id: 2, title: 'House Upfront', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/house.jpg', completed: false, target: 5000, current: 1000 },
-    { id: 3, title: 'Tesla Model 3', description: 'Pay off $20,000 in student loans by 2023', url:'/goals/tesla.jpg', completed: false, target: 5000, current: 3000 },
-  ]
+  const {account} = useAccount();
+  const supabase = useSupabase();
 
-    // Mock data for the dashboard
-    const accountOverview = {
-      balance: 2800.00,
-      total_goals: 3,
-      total_goals_completed:1,
-      total_monthly_contribution: 200
+  const [activeTab, setActiveTab] = useState("deposits");
+  const [fixedDeposits, setFixedDeposits] = useState<FixedDeposit[]>([])
+  const [loans, setLoans] = useState<Loan[]>([])
+  const [creditCards, setCreditCards] = useState<CreditCard[]>([])
+
+  // Fetch fixed deposits
+  const fetchFixedDeposits = async () => {
+    const { data, error } = await supabase
+      .from('fixed_deposits')
+      .select('*')
+      .eq('user_id', '2024001')
+    if (error) {
+      console.error('Failed to fetch fixed deposits:', error)
+    } else {
+      setFixedDeposits(data || [])
+    }
+  }
+
+    // Fetch fixed loans
+    const fetchLoans = async () => {
+      const { data, error } = await supabase
+        .from('loans')
+        .select('*')
+        .eq('user_id', '2024001')
+      if (error) {
+        console.error('Failed to fetch loans:', error)
+      } else {
+        setLoans(data || [])
+      }
     }
 
-    const [activeTab, setActiveTab] = useState("deposits");
+  // Fetch fixed loans
+  const fetchCreditCards = async () => {
+    const { data, error } = await supabase
+      .from('credit_cards')
+      .select('*')
+      .eq('user_id', '2024001')
+    if (error) {
+      console.error('Failed to fetch loans:', error)
+    } else {
+      setCreditCards(data || [])
+      console.log('asdasd')
+    }
+  }
+  useEffect(() => {
+    fetchFixedDeposits()
+    fetchLoans()
+    fetchCreditCards()
+  }, [])
     
   return (
     <div className='w-full pb-10'>
         <div className="flex-grow border-b py-6 sm:py-4 px-4">
             <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold pl-3 tracking-tight">Deposits, Loans & Cards</h1>
+            <p className='uppercase text-gray-400 text-sm px-6'>{account}</p>
             </div>
         </div>
         
@@ -39,13 +122,13 @@ export default function Finance() {
                 <TabsTrigger value="cards">Cards</TabsTrigger>
             </TabsList>
             <TabsContent value="deposits" className="space-y-4">
-                <Deposits />
+                <Deposits fixed_deposits={fixedDeposits}/>
             </TabsContent>
             <TabsContent value="loans" className="space-y-4">
-                <Loans />
+                <Loans loans={loans}/>
             </TabsContent>
             <TabsContent value="cards" className="space-y-4">
-                <Cards />
+                <Cards credit_cards={creditCards}/>
             </TabsContent>
           </Tabs>
         </div>

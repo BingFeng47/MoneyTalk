@@ -20,7 +20,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { Calendar } from '../ui/calendar'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
-import { useSupabase } from '@/app/demo/layout'
+import { useAccount, useSupabase } from '@/app/demo/layout'
 
 interface transaction{
     id: number,
@@ -31,24 +31,27 @@ interface transaction{
     description: string,
     category: string,
     payment_method: string,
+    bank: string,
 }
 
 
 export default function Transaction() {
   const supabase = useSupabase()
-  
+  const {account} = useAccount()
+
   const [date, setDate] = useState<Date>()
   const [transactions, setTransactions] = useState<transaction[]>([])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const itemsPerPage = 10
   const [page, setPage] = useState(1)
+  const filteredBankTransaction = account === 'all' ? transactions : transactions.filter(transaction => transaction.bank.toLowerCase() === account.toLowerCase());
+        const categories = Array.from(new Set(filteredBankTransaction.map(t => t.category)))
+        const filteredTransactions = filteredBankTransaction.filter(transaction => {
+          const dateMatch = !date || transaction.date === format(date, 'yyyy-MM-dd')
+          const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(transaction.category)
+          return dateMatch && categoryMatch
+        })
 
-  const categories = Array.from(new Set(transactions.map(t => t.category)))
-  const filteredTransactions = transactions.filter(transaction => {
-    const dateMatch = !date || transaction.date === format(date, 'yyyy-MM-dd')
-    const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(transaction.category)
-    return dateMatch && categoryMatch
-  })
 
     useEffect(() => {
         const fetchTransactions = async () => {
@@ -65,7 +68,9 @@ export default function Transaction() {
         }
 
         fetchTransactions()
-    }, [supabase])
+
+        
+    }, [account])
 
   return (
     <div className="container mx-auto">
@@ -135,7 +140,8 @@ export default function Transaction() {
                   <TableCell>{format(new Date(transaction.date), 'yyyy-MM-dd')}</TableCell>
                   <TableCell>{transaction.description}</TableCell>
                   <TableCell className=' '>{transaction.category}</TableCell>
-                  <TableCell className=' hidden md:block'>{transaction.payment_method}</TableCell>
+                  <TableCell className=' hidden md:block pt-2 m-0'>{transaction.payment_method}</TableCell>
+                  <TableCell className=' hidden md:block capitalize p-2 m-0'>{transaction.bank}</TableCell>
                   <TableCell className={`text-right ${
                     transaction.transaction_type === 'credit' ? 'text-green-600' : 'text-red-600'
                   } `}>
@@ -156,12 +162,12 @@ export default function Transaction() {
               Previous
             </Button>
             <span className='text-xs'>
-              Page {page} of {Math.ceil(transactions.length / itemsPerPage)}
+              Page {page} of {Math.ceil(filteredBankTransaction.length / itemsPerPage)}
             </span>
             <Button
               variant="outline"
               onClick={() => setPage((prev) => prev + 1)}
-              disabled={page === Math.ceil(transactions.length / itemsPerPage)}
+              disabled={page === Math.ceil(filteredBankTransaction.length / itemsPerPage)}
             >
               Next
             </Button>

@@ -4,29 +4,22 @@ import { Button } from '../ui/button'
 import { ArrowUpRight, Car, Check, GraduationCap, Home, Plus, Wallet } from 'lucide-react'
 import { Badge } from '../ui/badge'
 import { Progress } from '../ui/progress'
+import { useAccount } from '@/app/demo/layout'
 
 // Define the Loan type
-type Loan = {
+interface Loan {
   id: string;
-  userId: string;
+  user_id: string;
   amount: number;
-  interestRate: number;
-  termMonths: number;
-  startDate: string;
-  endDate: string;
-  loanType: string;
+  interest_rate: number;
+  term_months: number;
+  start_date: string;
+  end_date: string;
+  loan_type: string;
   status: string;
   icon: string;
-}
-// Mock function to simulate fetching data from an API
-const fetchUserLoans = async (userId: string): Promise<Loan[]> => {
-  // This would normally be an API call
-  return [
-    { id: '1', userId: '2024001', amount: 25000.00, interestRate: 3.50, termMonths: 36, startDate: '2024-01-15', endDate: '2027-01-15', loanType: 'Car Loan', status: 'active', icon: 'car' },
-    { id: '2', userId: '2024001', amount: 150000.00, interestRate: 4.20, termMonths: 180, startDate: '2023-05-10', endDate: '2033-05-10', loanType: 'Home Loan', status: 'active', icon: 'home' },
-    { id: '3', userId: '2024001', amount: 5000.00, interestRate: 5.00, termMonths: 24, startDate: '2024-02-20', endDate: '2026-02-20', loanType: 'Personal Loan', status: 'active', icon: 'wallet' },
-    { id: '4', userId: '2024001', amount: 10000.00, interestRate: 6.00, termMonths: 48, startDate: '2023-09-01', endDate: '2027-09-01', loanType: 'Education Loan', status: 'active', icon: 'graduation-cap' },
-  ]
+  bank: string;
+  monthly_instalment: number;
 }
 
 const LoanIcon = ({ icon }: { icon: string }) => {
@@ -43,31 +36,14 @@ const LoanIcon = ({ icon }: { icon: string }) => {
   }
 }
 
-export default function Loans() {
-  const [loans, setLoans] = useState<Loan[]>([])
-  const [isLoading, setIsLoading] = useState(true)
+export default function Loans({loans}: {loans: Loan[]}) {
 
-  useEffect(() => {
-    const loadLoans = async () => {
-      setIsLoading(true)
-      try {
-        const userLoans = await fetchUserLoans('2024001') // Hardcoded user ID for this example
-        setLoans(userLoans)
-      } catch (error) {
-        console.error('Failed to fetch loans:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+  const {account} = useAccount();
 
-    loadLoans()
-  }, [])
+  const filteredLoans = account === 'all' ? loans : loans.filter(loan => loan.bank.toLowerCase() === account.toLowerCase());
 
-  const totalLoanAmount = loans.reduce((sum, loan) => sum + loan.amount, 0)
+  const totalLoanAmount = filteredLoans.reduce((sum, loan) => sum + loan.amount, 0)
 
-  if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>
-  }
 
   const calculateProgress = (startDate: string, endDate: string) => {
     const start = new Date(startDate).getTime()
@@ -88,32 +64,40 @@ export default function Loans() {
       </Card>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {loans.map((loan) => (
+        {filteredLoans.map((loan) => (
           <Card key={loan.id} className="w-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {loan.loanType}
+              <CardTitle className="text-lg font-medium">
+                {loan.loan_type}
               </CardTitle>
               <LoanIcon icon={loan.icon} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">RM {loan.amount.toFixed(2)}</div>
-              <p className="text-xs text-muted-foreground">
-                {loan.interestRate}% interest rate
-              </p>
+              <p className='text-muted-foreground text-xs'>{loan.bank.toUpperCase()}</p>
+              <div className=' flex flex-row justify-between items-center'>
+                <div className="text-2xl font-bold">RM {loan.amount.toFixed(2)}</div>
+                <p className="text-xs text-muted-foreground">
+                  {loan.interest_rate}% interest rate
+                </p>
+              </div>
               <Progress 
-                value={calculateProgress(loan.startDate, loan.endDate)} 
+                value={calculateProgress(loan.start_date, loan.end_date)} 
                 className="mt-2"
               />
-              <p className="text-xs text-muted-foreground mt-2">
-                {Math.round(calculateProgress(loan.startDate, loan.endDate))}% completed
-              </p>
+              <div className='flex justify-between items-center'>
+                <p className="text-xs text-muted-foreground mt-2">
+                  {Math.round(calculateProgress(loan.start_date, loan.end_date))}% completed
+                </p>
+                <p className='text-xs text-muted-foreground'>Term: {loan.term_months} months</p>
+              </div>
             </CardContent>
             <CardFooter className="flex justify-between">
               <CardDescription>
-                Term: {loan.termMonths} months
+                RM {loan.monthly_instalment} / month
               </CardDescription>
-              <Badge variant="default" className='capitalize hover:bg-primary'>{loan.status}</Badge>
+              <Badge variant="default" className={`capitalize ${loan.status === 'active' ? 'bg-primary' : loan.status === 'defaulted'  ? 'bg-red-500'  : 'bg-gray-500'}`}>
+                {loan.status}
+              </Badge>
             </CardFooter>
           </Card>
         ))}
