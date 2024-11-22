@@ -110,17 +110,21 @@ export default function Home() {
               colors={{ first: "#A07CFE", second: "#FE8FB5" }}
               />
             </h1>
-            <p className="mx-auto max-w-[700px] text-primary font-semibold md:text-base text-2xl">
-              No Money, <span className="line-through text-gray-500 font-medium text-lg"> No Talk</span> <span className="text-primary">  Let's Talk!</span> 
+            <p className="mx-auto  text-primary font-semibold md:text-2xl text-xl">
+              No Money, <span className="line-through text-gray-400 text-lg"> No Talk</span> <span className="text-primary">  Let's Talk!</span> 
             </p>
-            <Link href="/chatbot" className="flex flex-row lg:gap-8 gap-4 pt-5">
-              <Button variant={"outline"} size={"lg"} className="lg:text-sm py-6 font-semibold">
-              Learn More
-              </Button>
-              <Button variant={"default"} size={"lg"} className="lg:text-sm py-6 font-semibold">
-              Try Demo!
-              </Button>
-            </Link>
+            <div className="flex gap-2">
+              <Link href="/docs" className="flex flex-row lg:gap-8 gap-4 pt-5">
+                <Button variant={"outline"} size={"lg"} className="lg:text-sm py-6 font-semibold">
+                Learn More
+                </Button>
+              </Link>
+              <Link href="/demo/dashboard" className="flex flex-row lg:gap-8 gap-4 pt-5">
+                <Button variant={"default"} size={"lg"} className="lg:text-sm py-6 font-semibold">
+                Try Demo!
+                </Button>
+              </Link>
+            </div>
             </section>
           <GridPattern
             squares={[
@@ -131,13 +135,11 @@ export default function Home() {
               [5, 5],
               [10, 10],
               [12, 15],
-              [15, 10],
               [10, 15],
               [15, 10],
               [22, 20],
               [20, 20],
               [27, 30],
-              [22, 20],
               [28, 10],
               [30, 20],
               [35, 24],

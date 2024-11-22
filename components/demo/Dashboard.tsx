@@ -48,7 +48,7 @@ interface transaction{
 }
 
 
-export function Dashboard() {
+export function Dashboard({ account }: { account: string }) {
     // Supabase
     const supabase = useSupabase(); // Access the Supabase client
     const [transactions, setTransactions] = useState<transaction[]>([])
@@ -56,7 +56,6 @@ export function Dashboard() {
     const [goals, setGoals] = useState<Goal[]>([])
 
     // State
-    const [selectedAccount, setSelectedAccount] = useState('all')
     const [activeTab, setActiveTab] = useState("overview");
 
     useEffect(() => {
@@ -113,35 +112,6 @@ export function Dashboard() {
         <div className="flex-grow border-b py-6 sm:py-4 px-4">
             <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold pl-3 tracking-tight">Dashboard</h1>
-                <div>
-                    <Select value={selectedAccount} onValueChange={setSelectedAccount}>
-                        <SelectTrigger className="w-[220px]">
-                        <SelectValue placeholder="Select account" />
-                        </SelectTrigger>
-                        <SelectContent>
-                        <SelectItem value="all">
-                            <span className="flex justify-center items-center gap-3">
-                            <Cannabis strokeWidth={1.5} size={16} /> All Accounts
-                            </span>
-                        </SelectItem>
-                        <SelectItem value="checking">
-                            <span className="flex justify-center items-center gap-3">
-                            <Leaf strokeWidth={1.5} size={16} /> Checking Accounts
-                            </span>
-                        </SelectItem>
-                        <SelectItem value="savings">
-                            <span className="flex justify-center items-center gap-3">
-                            <Sprout strokeWidth={1.5} size={16} /> Savings Accounts
-                            </span>
-                        </SelectItem>
-                        <SelectItem value="investment">
-                            <span className="flex justify-center items-center gap-3">
-                            <Clover strokeWidth={1.5} size={16} /> Investment Accounts
-                            </span>
-                        </SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
             </div>
         </div>
 

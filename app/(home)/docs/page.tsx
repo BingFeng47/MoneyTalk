@@ -17,9 +17,9 @@ export default function DocsPage() {
           </p>
         </div>
         </div>
-        <section id='youtube' className='w-full px-5 md:px-28 pb-10'>
+        {/* <section id='youtube' className='w-full px-5 md:px-28 pb-10'>
           <Youtube/>
-        </section>
+        </section> */}
     </div>
 
   )

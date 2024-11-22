@@ -1,4 +1,5 @@
-import { ArrowLeftRight, Bird, Bot, Calendar, ChevronsUpDown, Goal, Home, Inbox, LogOut, Search, Settings, WalletCards } from "lucide-react"
+'use client'
+import { ArrowLeftRight, Bird, Bot, Calendar, Cannabis, Cat, ChevronsUpDown, CirclePlus, Clover, Goal, Home, Inbox, Leaf, LogOut, Search, Settings, Sprout, Squirrel, WalletCards } from "lucide-react"
 
 import {
   Sidebar,
@@ -13,8 +14,9 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
 import Image from "next/image"
 import { ThemeButtonMobile } from "./ThemeButtonMobile"
-import React from "react"
+import React, { useState } from "react"
 import Link from "next/link"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 // Menu items.
 const items = [
@@ -55,7 +57,14 @@ const items = [
   },
 ]
 
-export function AppSidebar() {
+export function AppSidebar({ onAccountChange }: { onAccountChange: (account: string) => void }) {
+  const [selectedAccount, setSelectedAccount] = useState('all')
+
+  const handleAccountChange = (account: string) => {
+    setSelectedAccount(account)
+    onAccountChange(account)
+  }
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -69,6 +78,36 @@ export function AppSidebar() {
                 </a>
             </SidebarGroupContent>
         </SidebarGroup>
+
+        <div className=" px-4 pt-2">
+            <Select value={selectedAccount} onValueChange={handleAccountChange}>
+                <SelectTrigger className="w-[220px]">
+                <SelectValue placeholder="Select account" />
+                </SelectTrigger>
+                <SelectContent>
+                <SelectItem value="all">
+                    <span className="flex justify-center items-center gap-3">
+                    <Cannabis strokeWidth={1.5} size={16} /> All Accounts
+                    </span>
+                </SelectItem>
+                <SelectItem value="cimb">
+                    <span className="flex justify-center items-center gap-3">
+                    <Squirrel strokeWidth={1.5} size={16} /> CIMB: 6868668123
+                    </span>
+                </SelectItem>
+                <SelectItem value="maybank">
+                    <span className="flex justify-center items-center gap-3">
+                    <Cat strokeWidth={1.5} size={16} /> Maybank: 9928312374
+                    </span>
+                </SelectItem>
+                <div  className="border-2 border-dashed border-gray-300 mt-2 p-2 hover:cursor-pointer rounded-lg text-sm hover:bg-accent">
+                    <span className="flex justify-center items-center gap-3">
+                    <CirclePlus strokeWidth={1.5} size={16} /> Add Bank Account
+                    </span>
+                </div>
+                </SelectContent>
+            </Select>
+        </div>
         
         {/* Features */}
         <SidebarGroup>

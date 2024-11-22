@@ -9,28 +9,23 @@ const files = [
       image: "/logo/aws.png",
     },
     {
-      name: "Riot",
-      image: "/logo/riot.png",
+      name: "JomHack",
+      image: "/logo/jomhack.png",
 
     },
     {
-        name: "Valorant",
-        image: "/logo/valorant.png",
+        name: "PayNet",
+        image: "/logo/paynet.png",
   
     },
     {
-      name: "Devpost",
-      image: "/logo/devpost.png",
+      name: "Supabase",
+      image: "/logo/supabase.png",
 
     },
     {
       name: "Vercel",
       image: "/logo/vercel.png",
-
-    },
-    {
-      name: "Next",
-      image: "/logo/next.png",
 
     },
   ];

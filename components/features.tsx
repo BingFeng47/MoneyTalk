@@ -9,7 +9,7 @@ const features = [
     Icon: Bot,
     name: "AI Chatbot",
     description: "AI-powered chatbot that helps you manage finances from Open Finance data.",
-    href: "./demo",
+    href: "./demo/dashboard",
     cta: "Try Demo",
     className: "col-span-3 lg:col-span-1",
     background: (
@@ -71,7 +71,7 @@ const features = [
     Icon: Gamepad2,
     name: "Automated Finance Management",
     description: "A system that simplifies financial management by automating expense tracking, analysis, and goal planning for smarter financial decisions",
-    href: "./demo",
+    href: "./demo/dashboard",
     cta: "Experience Now",
     className: " col-span-3 lg:col-span-2",
     background: (

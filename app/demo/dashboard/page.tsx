@@ -1,12 +1,16 @@
-import { Dashboard } from '@/components/demo/Dashboard'
-import React from 'react'
+'use client'
+import { Dashboard } from '@/components/demo/Dashboard';
+import React from 'react';
+import { useAccount } from '../layout';
 
-function dashboard() {
+function DashboardPage() {
+  const { account } = useAccount(); // Access account from context
+
   return (
     <div>
-      <Dashboard />
+      <Dashboard account={account} />
     </div>
-  )
+  );
 }
 
-export default dashboard
+export default DashboardPage;
