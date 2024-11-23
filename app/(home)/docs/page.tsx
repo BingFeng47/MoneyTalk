@@ -1,3 +1,4 @@
+import { Card } from '@/components/ui/card'
 import { Youtube } from '@/components/Youtube'
 import { BookX } from 'lucide-react'
 import React from 'react'
@@ -17,9 +18,13 @@ export default function DocsPage() {
           </p>
         </div>
         </div>
-        {/* <section id='youtube' className='w-full px-5 md:px-28 pb-10'>
-          <Youtube/>
-        </section> */}
+        
+        <h1 className='text-center text-lg text-muted-foreground'>The documentation and repository will be releasing soon!</h1>
+        
+        <section id='youtube' className='w-full px-5 md:px-28 pb-10'>
+          {/* <Youtube/> */}
+        </section>
+        
     </div>
 
   )
