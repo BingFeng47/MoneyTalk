@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { OTP } from "./Otp";
-import { Button } from "./ui/button";
+import { useEffect, useState } from 'react';
+import io from 'socket.io-client';
+import { OTP } from './Otp';
+import { Button } from './ui/button';
 
 const ConfirmationModal = () => {
   const [name, setName] = useState("Calvin Koay");
   const [bank, setBank] = useState("Maybank");
   const [amount, setAmount] = useState("200");
   const [isVisible, setIsVisible] = useState(false);
-  const socket = io("wss://bouz.ocealab.co/api/trigger-confirmation"); // WebSocket URL
+
+  // Connect to the WebSocket server
+  const socket = io('https://bouz.ocealab.co');  // WebSocket server URL
 
   useEffect(() => {
-    // Listen for the "trigger-confirmation" event from the server
-    socket.on("trigger-confirmation", (data) => {
+    // Listen for the 'trigger-confirmation' event from the server
+    socket.on('trigger-confirmation', (data) => {
       setName(data.name);
       setBank(data.bank);
       setAmount(data.amount);
@@ -26,8 +28,8 @@ const ConfirmationModal = () => {
   }, []);
 
   const handleConfirm = () => {
-    // Handle confirmation logic (e.g., Emit confirmation response to server)
-    socket.emit("confirmation-response", { confirmed: true });
+    // Handle confirmation logic (emit confirmation response to the server)
+    socket.emit('confirmation-response', { confirmed: true });
     setIsVisible(false); // Close the modal after confirmation
   };
 
@@ -47,6 +49,9 @@ const ConfirmationModal = () => {
           <div className="flex justify-around">
             <Button onClick={handleCancel} variant="default">
               Cancel
+            </Button>
+            <Button onClick={handleConfirm} variant="default">
+              Confirm
             </Button>
           </div>
         </div>
