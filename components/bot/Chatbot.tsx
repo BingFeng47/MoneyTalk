@@ -193,104 +193,104 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
   }
 
   return (
-    <div className="h-screen flex flex-col px-5 pt-6">
+    <div className="h-[calc(100vh-50px)] w-5/6 flex flex-col  px-5 pt-6">
       <div className="border-2 border-muted rounded-lg h-full flex flex-col">
-        {/* Header */}
-        <div className="bg-primary flex justify-between items-center p-4 rounded-t-lg gap-2">
-          <div className="flex justify-center items-center gap-3">
-            <Bird size={42} className="text-white" strokeWidth={1.5} />
-            <h1 className="text-xl text-white font-bold">MoneyTalk</h1>
+      {/* Header */}
+      <div className="bg-primary flex justify-between items-center p-4 rounded-t-lg gap-2">
+        <div className="flex justify-center items-center gap-3">
+        <Bird size={42} className="text-white" strokeWidth={1.5} />
+        <h1 className="text-xl text-white font-bold">MoneyTalk</h1>
+        </div>
+        <div className="pr-2">
+        <Button className="hidden md:block" onClick={handleOnClose}>
+          <CircleX className="text-white" />
+        </Button>
+        </div>
+      </div>
+    
+      {/* Scrollable Chat Area */}
+      <div className="flex-grow overflow-y-auto p-4">
+        {/* Chat messages */}
+        {responses.map((response, index) => (
+        <div key={index} className={`mb-2 self-end ${response.user === 'user' ? 'bg-primary' : 'dark:bg-secondary bg-primary/70 '} text-white px-4 py-2 rounded-lg flex gap-2 items-center`}>
+          <div className="py-2 rounded-lg flex gap-4 items-center">
+          <div className="flex-shrink-0 self-start">
+          {response.user === 'user' ? <Bird className="text-white" size={20} /> : <Bot className="text-white" size={20} />}
           </div>
-          <div className="pr-2">
-            <Button className="hidden md:block" onClick={handleOnClose}>
-              <CircleX className="text-white" />
+          <div className="flex-grow">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{response.chat}</ReactMarkdown>
+          </div>
+          </div>
+        </div>
+        ))}
+        {loading && (
+        <div className="mb-2 self-end text-primary px-4 py-2 rounded-lg flex gap-2 justify-center items-center">
+          <div className="py-2 rounded-lg flex gap-4 items-center">
+          <div className="flex-grow">
+            <span className="animate-pulse">Hold on… My robot brain needs a moment!</span>
+          </div>
+          </div>
+        </div>
+        )}
+      </div>
+    
+      {/* Input and Button Section */}
+      <div className="flex flex-col p-2 border-t border-muted">
+        {/* Quick Prompt */}
+        <div className="p-2 flex flex-col">
+        <p className="text-xs font-bold">Quick Prompt</p>
+        <div className="flex gap-4 my-2 overflow-x-auto no-scrollbar sm:scrollbar">
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Am I financially ready for a partner?')}>Am I financially ready for a partner?</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Help me create a financial goal')}>Help me create a financial goal</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`J&T Express Notification :
+  Your package is currently at our center. We've attempted delivery twice but couldn't complete it due to missing address details. Please confirm or update your address within the next 24 hours to avoid the return of your parcel. Update your information at https://jtexpess.top/my and we will attempt to ship your package again within a day. Thank you.
+  \n \nDo you think this is a scam messages?`)}>Test Scam Messeage</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`Help me transfer ${Math.floor(Math.random() * 1000)} to Calvin Koay from CIMB bank`)}>Test Funds Transfer</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Hows my credit scoring? Any Suggestions?')}>Hows my credit scoring? Any Suggestions?</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Is there any anomaly in my transaction?')}>Is there any anomaly in my transaction?</Button>
+        </div>
+        </div>
+    
+        {/* Input */}
+        <div className="flex gap-2 px-2 pb-2">
+        <Input
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Type your message..."
+          onKeyDown={(e) => {
+          if (e.key === "Enter" && !loading) {
+            onSubmit();
+          }
+          }}
+          className="w-full"
+        />
+        {loading ? (
+          <div className="flex gap-2">
+          <Button disabled>
+            <Mic />
+          </Button>
+          <Button disabled>
+            <Loader2 className="animate-spin" />
+          </Button>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+          {!isListening ? (
+            <Button onClick={startListening} disabled={isListening}>
+            <Mic />
             </Button>
-          </div>
-        </div>
-  
-        {/* Scrollable Chat Area */}
-        <div className="flex-grow overflow-y-auto p-4">
-          {/* Chat messages */}
-          {responses.map((response, index) => (
-            <div key={index} className={`mb-2 self-end ${response.user === 'user' ? 'bg-primary' : 'dark:bg-secondary bg-primary/70 '} text-white px-4 py-2 rounded-lg flex gap-2 items-center`}>
-              <div className="py-2 rounded-lg flex gap-4 items-center">
-              <div className="flex-shrink-0 self-start">
-                {response.user === 'user' ? <Bird className="text-white" size={20} /> : <Bot className="text-white" size={20} />}
-              </div>
-              <div className="flex-grow">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{response.chat}</ReactMarkdown>
-              </div>
-              </div>
-            </div>
-          ))}
-          {loading && (
-            <div className="mb-2 self-end text-primary px-4 py-2 rounded-lg flex gap-2 justify-center items-center">
-              <div className="py-2 rounded-lg flex gap-4 items-center">
-                <div className="flex-grow">
-                  <span className="animate-pulse">Hold on… My robot brain needs a moment!</span>
-                </div>
-              </div>
-            </div>
+          ) : (
+            <Button onClick={stopListening} disabled={!isListening}>
+            <StopCircle />
+            </Button>
           )}
-        </div>
-  
-        {/* Input and Button Section */}
-        <div className="flex flex-col p-2 border-t border-muted">
-          {/* Quick Prompt */}
-          <div className="p-2 flex flex-col">
-            <p className="text-xs font-bold">Quick Prompt</p>
-            <div className="flex gap-4 my-2 overflow-x-auto no-scrollbar sm:scrollbar">
-              <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Am I financially ready for a partner?')}>Am I financially ready for a partner?</Button>
-              <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Help me create a financial goal')}>Help me create a financial goal</Button>
-              <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`J&T Express Notification :
-Your package is currently at our center. We've attempted delivery twice but couldn't complete it due to missing address details. Please confirm or update your address within the next 24 hours to avoid the return of your parcel. Update your information at https://jtexpess.top/my and we will attempt to ship your package again within a day. Thank you.
-\n \nDo you think this is a scam messages?`)}>Test Scam Messeage</Button>
-              <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`Help me transfer ${Math.floor(Math.random() * 1000)} to Calvin Koay from CIMB bank`)}>Test Funds Transfer</Button>
-              <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Hows my credit scoring? Any Suggestions?')}>Hows my credit scoring? Any Suggestions?</Button>
-              <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Is there any anomaly in my transaction?')}>Is there any anomaly in my transaction?</Button>
-            </div>
+          <Button onClick={onSubmit} disabled={!inputValue.trim()}>
+            Send
+          </Button>
           </div>
-  
-          {/* Input */}
-          <div className="flex gap-2 px-2 pb-2">
-            <Input
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Type your message..."
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !loading) {
-                  onSubmit();
-                }
-              }}
-              className="w-full"
-            />
-            {loading ? (
-              <div className="flex gap-2">
-                <Button disabled>
-                  <Mic />
-                </Button>
-                <Button disabled>
-                  <Loader2 className="animate-spin" />
-                </Button>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                {!isListening ? (
-                  <Button onClick={startListening} disabled={isListening}>
-                    <Mic />
-                  </Button>
-                ) : (
-                  <Button onClick={stopListening} disabled={!isListening}>
-                    <StopCircle />
-                  </Button>
-                )}
-                <Button onClick={onSubmit} disabled={!inputValue.trim()}>
-                  Send
-                </Button>
-              </div>
-            )}
-          </div>
+        )}
         </div>
+      </div>
       </div>
     </div>
   );

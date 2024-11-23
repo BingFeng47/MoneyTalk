@@ -88,7 +88,9 @@ export default function DemoLayout({
                 </ResizablePanel>
                 <ResizableHandle withHandle />
                 <ResizablePanel>
-                  <Chatbot handleOnClose={handleShowAlert} />
+                  <div className="sticky bottom-0 right-0 w-full sm:w-auto sm:bottom-6">
+                    <Chatbot handleOnClose={handleShowAlert} />
+                  </div>
                 </ResizablePanel>
               </ResizablePanelGroup>
             ) : (
@@ -104,7 +106,7 @@ export default function DemoLayout({
             {/* Alert Dialog */}
             {showAlert && (
               <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-20">
-                <div className="bg-white p-6 rounded-lg shadow-lg">
+                <div className="bg-secondary p-6 rounded-lg shadow-lg">
                   <h2 className="text-lg font-semibold">End Chat Session</h2>
                   <p className="mt-2">Are you sure you want to close the chat? The session will end.</p>
                   <div className="mt-4 flex justify-end space-x-2">
