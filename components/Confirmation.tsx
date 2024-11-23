@@ -5,18 +5,17 @@ import { Button } from "./ui/button";
 
 const ConfirmationModal = () => {
   const [name, setName] = useState("Calvin Koay");
-  const [bank, setBank] = useState("maybank");
+  const [bank, setBank] = useState("Maybank");
   const [amount, setAmount] = useState("200");
   const [isVisible, setIsVisible] = useState(false);
-  const socket = io("wss://bouz.ocealab.co/api/trigger-confirmation"); // Corrected to use WebSocket URL
+  const socket = io("wss://bouz.ocealab.conpm install cors/api/trigger-confirmation"); // WebSocket URL
 
   useEffect(() => {
-
     // Listen for the "trigger-confirmation" event from the server
     socket.on("trigger-confirmation", (data) => {
       setName(data.name);
-      setBank(data.bank)
-      setAmount(data.amount)
+      setBank(data.bank);
+      setAmount(data.amount);
       setIsVisible(true); // Show the modal when data is received
     });
 
@@ -27,8 +26,7 @@ const ConfirmationModal = () => {
   }, []);
 
   const handleConfirm = () => {
-    // Handle confirmation logic
-    // Example: Emit confirmation response to server
+    // Handle confirmation logic (e.g., Emit confirmation response to server)
     socket.emit("confirmation-response", { confirmed: true });
     setIsVisible(false); // Close the modal after confirmation
   };
@@ -39,17 +37,20 @@ const ConfirmationModal = () => {
 
   return (
     isVisible && (
-    <div className="confirmation-modal-overlay ">
-      <div className="confirmation-modal-content">
-        <p>PIN Number</p>
-        <OTP/>
-        <p>Sending RM{amount} to {name} from <span className="capitalize">{bank}</span></p>
-        <div className="flex justify-around">
-        <Button onClick={handleCancel} variant={'default'}>Cancel</Button>
+      <div className="confirmation-modal-overlay">
+        <div className="confirmation-modal-content">
+          <p>PIN Number</p>
+          <OTP />
+          <p>
+            Sending RM {amount} to {name} from <span className="capitalize">{bank}</span>
+          </p>
+          <div className="flex justify-around">
+            <Button onClick={handleCancel} variant="default">
+              Cancel
+            </Button>
+          </div>
         </div>
-        
       </div>
-    </div>
     )
   );
 };

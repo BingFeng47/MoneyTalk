@@ -10,7 +10,15 @@ export async function POST(req: Request) {
   if (!name || !amount || !bank) {
     return new Response(
       JSON.stringify({ error: 'Name, amount, and bank are required.' }),
-      { status: 400, headers: { 'Content-Type': 'application/json' } }
+      { 
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',  // Allow all origins
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',  // Allow POST and OPTIONS methods
+          'Access-Control-Allow-Headers': 'Content-Type',  // Allow specific headers
+        }
+      }
     );
   }
 
@@ -20,6 +28,14 @@ export async function POST(req: Request) {
   // Respond with success
   return new Response(
     JSON.stringify({ status: 'success', message: 'Confirmation request received' }),
-    { status: 200, headers: { 'Content-Type': 'application/json' } }
+    {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',  // Allow all origins
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      }
+    }
   );
 }
