@@ -10,7 +10,7 @@ const ConfirmationModal = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Connect to the WebSocket server
-  const socket = io('https://bouz.ocealab.co');  // WebSocket server URL
+  const socket = io('https://bouz.ocealab.co/api/trigger-confirmation');  // WebSocket server URL
 
   useEffect(() => {
     // Listen for the 'trigger-confirmation' event from the server
