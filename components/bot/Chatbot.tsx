@@ -244,7 +244,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Help me create a financial goal')}>Help me create a financial goal</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`J&T Express Notification :
   Your package is currently at our center. We've attempted delivery twice but couldn't complete it due to missing address details. Please confirm or update your address within the next 24 hours to avoid the return of your parcel. Update your information at https://jtexpess.top/my and we will attempt to ship your package again within a day. Thank you.
-  \n \nDo you think this is a scam messages?`)}>Test Scam Messeage</Button>
+  \n \nDo you think this is a scam messages?`)}>Test Scam Messages</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`Help me transfer ${Math.floor(Math.random() * 1000)} to Calvin Koay from CIMB bank`)}>Test Funds Transfer</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Hows my credit scoring? Any Suggestions?')}>Hows my credit scoring? Any Suggestions?</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Is there any anomaly in my transaction?')}>Is there any anomaly in my transaction?</Button>
