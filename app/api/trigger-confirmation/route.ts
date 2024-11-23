@@ -14,7 +14,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (req.method === 'POST') {
-    const { name, amount, bank } = req.body;
+    const { name, amount, bank } = req.body
 
     // Validate incoming data
     if (!name || !amount || !bank) {
