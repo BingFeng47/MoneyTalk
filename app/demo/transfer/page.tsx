@@ -161,14 +161,14 @@ export default function Transfer() {
     <div className='w-full'>
         <div className="flex-grow border-b py-6 sm:py-4 px-4">
             <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold pl-3 tracking-tight">Transfer & Receive</h1>
+            <h1 className="text-3xl font-bold pl-6 tracking-tight">Transfer & Receive</h1>
             </div>
         </div>
 
         <div className="p-4 h-full flex-shrink-0">
           <Card >
             <CardHeader>
-              <CardTitle>Transfer or Receive Funds</CardTitle>
+              <CardTitle className=''>Transfer or Receive Funds</CardTitle>
               <CardDescription>Manage your money easily</CardDescription>
             </CardHeader>
             <CardContent>

@@ -6,7 +6,7 @@ export default function Analytics() {
     <div className="container mx-auto">
         <Card >
         <CardHeader>
-          <CardTitle>Analytics</CardTitle>
+          <CardTitle >Analytics</CardTitle>
           <CardDescription>AI Powered Analytics</CardDescription>
         </CardHeader>
         <CardContent>

@@ -74,7 +74,7 @@ export default function DemoLayout({
                 <Bot size={28} className="text-white" />
               </div>
             )}
-            <SidebarTrigger className="fixed " />
+            <SidebarTrigger className="fixed pt-8" />
 
             {/* Bot */}
             {botVisible ? (

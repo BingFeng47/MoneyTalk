@@ -138,7 +138,7 @@ export function Dashboard({ account }: { account: string }) {
     <div className='w-full'>
         <div className="flex-grow border-b py-6 sm:py-4 px-4">
             <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold pl-3 tracking-tight">Dashboard </h1>
+            <h1 className="text-3xl font-bold pl-6 tracking-tight">Dashboard </h1>
             <p className='uppercase text-gray-400 text-sm px-6'>{account}</p>
             </div>
         </div>
