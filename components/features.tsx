@@ -18,18 +18,18 @@ const features = [
         "relative"
       )}>
         <Image
-          src="/feature/bot-light.png"
-          alt="Valorant"
-          width={400}
-          height={400}
+          src="/features/bot_light.jpeg"
+          alt="image"
+          width={500}
+          height={500}
           className="absolute dark:hidden"
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
         />
         <Image
-          src="/feature/bot-dark.png"
-          alt="Valorant"
-          width={400}
-          height={400}
+          src="/features/bot_dark.jpeg"
+          alt="image"
+          width={500}
+          height={500}
           className="absolute hidden dark:block"
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
         />
@@ -49,17 +49,17 @@ const features = [
         "relative"
       )}>
         <Image
-          src="/feature/players-light.png"
-          alt="Valorant"
-          width={800}
+          src="/features/goals_light.jpeg"
+          alt="image"
+          width={900}
           height={800}
           className="absolute dark:hidden"
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
         />
         <Image
-          src="/feature/players-dark.png"
-          alt="Valorant"
-          width={800}
+          src="/features/goals_dark.jpeg"
+          alt="image"
+          width={900}
           height={800}
           className="absolute hidden dark:block"
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
@@ -81,19 +81,19 @@ const features = [
       )}>
 
         <Image
-          src="/feature/feedback-light.png"
-          alt="Valorant"
-          width={800}
+          src="/features/loan_light.jpeg"
+          alt="image"
+          width={900}
           height={800}
           className="absolute dark:hidden "
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
         />
 
         <Image
-          src="/feature/feedback-dark.png"
-          alt="Valorant"
-          width={800}
-          height={800}
+          src="/features/loan_dark.jpeg"
+          alt="image"
+          width={900}
+          height={900}
           className="absolute hidden dark:block"
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
         />
@@ -114,18 +114,18 @@ const features = [
         "relative w-full"
       )}>
         <Image
-          src="/feature/documentation-light.png"
-          alt="Valorant"
-          width={400}
-          height={400}
+          src="/features/home_dark.jpeg"
+          alt="image"
+          width={500}
+          height={500}
           className="absolute dark:hidden"
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
         />
         <Image
-          src="/feature/documentation-dark.png"
-          alt="Valorant"
-          width={400}
-          height={400}
+          src="/features/home_light.jpeg"
+          alt="image"
+          width={500}
+          height={500}
           className="absolute hidden dark:block"
           style={{ maskImage: "linear-gradient(to top, transparent, black)" }}
         />
@@ -137,8 +137,8 @@ const features = [
 export function Features() {
   return (
     <BentoGrid>
-      {features.map((feature, idx) => (
-        <BentoCard key={idx} {...feature} />
+      {features.map((features, idx) => (
+        <BentoCard key={idx} {...features} />
       ))}
     </BentoGrid>
   );

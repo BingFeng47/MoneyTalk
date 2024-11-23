@@ -68,11 +68,6 @@ export default function Home() {
                       Home
                     </Button>
                   </Link>
-                  <Link href="/">
-                    <Button variant={"outline"} className="lg:text-sm w-full">
-                      AI Chat
-                    </Button>
-                  </Link>
                   <Link href="/about">
                     <Button variant={"outline"} className="lg:text-sm w-full">
                       About Us
@@ -161,7 +156,7 @@ export default function Home() {
           </div>
         </section>
         {/* Testimonials Section */}
-        <Testimonials />
+        {/* <Testimonials /> */}
 
         {/* Top Features */}
         <section className="bg-muted py-20 items-center">
