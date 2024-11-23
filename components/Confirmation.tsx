@@ -8,7 +8,7 @@ const ConfirmationModal = () => {
   const [bank, setBank] = useState("Maybank");
   const [amount, setAmount] = useState("200");
   const [isVisible, setIsVisible] = useState(false);
-  const socket = io("wss://bouz.ocealab.conpm install cors/api/trigger-confirmation"); // WebSocket URL
+  const socket = io("wss://bouz.ocealab.co/api/trigger-confirmation"); // WebSocket URL
 
   useEffect(() => {
     // Listen for the "trigger-confirmation" event from the server
