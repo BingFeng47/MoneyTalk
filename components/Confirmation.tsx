@@ -1,41 +1,57 @@
 import { useEffect, useState } from "react";
-import io from 'socket.io-client';
+import io from "socket.io-client";
+import { OTP } from "./Otp";
+import { Button } from "./ui/button";
 
 const ConfirmationModal = () => {
-    const [message, setMessage] = useState('');
-    const [isVisible, setIsVisible] = useState(false);
-  
-    useEffect(() => {
-      const socket = io('https://your-nextjs-api-url.com');  // WebSocket server
-  
-      socket.on('trigger-confirmation', (data) => {
-        setMessage(data.message);
-        setIsVisible(true); // Show the modal
-      });
-  
-      return () => {
-        socket.disconnect();
-      };
-    }, []);
-  
-    const handleConfirm = () => {
-      // Handle confirmation logic (e.g., send response to server)
-      setIsVisible(false);
+  const [name, setName] = useState("Calvin Koay");
+  const [bank, setBank] = useState("maybank");
+  const [amount, setAmount] = useState("200");
+  const [isVisible, setIsVisible] = useState(false);
+  const socket = io("wss://bouz.ocealab.co/api/trigger-confirmation"); // Corrected to use WebSocket URL
+
+  useEffect(() => {
+
+    // Listen for the "trigger-confirmation" event from the server
+    socket.on("trigger-confirmation", (data) => {
+      setName(data.name);
+      setBank(data.bank)
+      setAmount(data.amount)
+      setIsVisible(true); // Show the modal when data is received
+    });
+
+    // Cleanup WebSocket connection when the component is unmounted
+    return () => {
+      socket.disconnect();
     };
-  
-    const handleCancel = () => {
-      setIsVisible(false); // Close the modal without action
-    };
-  
-    return (
-      isVisible && (
-        <div className="confirmation-modal">
-          <p>{message}</p>
-          <button onClick={handleConfirm}>Confirm</button>
-          <button onClick={handleCancel}>Cancel</button>
-        </div>
-      )
-    );
+  }, []);
+
+  const handleConfirm = () => {
+    // Handle confirmation logic
+    // Example: Emit confirmation response to server
+    socket.emit("confirmation-response", { confirmed: true });
+    setIsVisible(false); // Close the modal after confirmation
   };
-  
-  export default ConfirmationModal;
+
+  const handleCancel = () => {
+    setIsVisible(false); // Close the modal without action
+  };
+
+  return (
+    isVisible && (
+    <div className="confirmation-modal-overlay ">
+      <div className="confirmation-modal-content">
+        <p>PIN Number</p>
+        <OTP/>
+        <p>Sending RM{amount} to {name} from <span className="capitalize">{bank}</span></p>
+        <div className="flex justify-around">
+        <Button onClick={handleCancel} variant={'default'}>Cancel</Button>
+        </div>
+        
+      </div>
+    </div>
+    )
+  );
+};
+
+export default ConfirmationModal;

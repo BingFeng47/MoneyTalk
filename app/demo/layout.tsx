@@ -10,6 +10,7 @@ import { createContext, useContext, useMemo, useState, ReactNode } from 'react';
 
 // Supabase Client Context
 import { SupabaseClient } from '@supabase/supabase-js';
+import ConfirmationModal from '@/components/Confirmation';
 
 const SupabaseContext = createContext<SupabaseClient | null>(null);
 const AccountContext = createContext<{ account: string; setAccount: React.Dispatch<React.SetStateAction<string>> } | null>(null);
@@ -20,6 +21,7 @@ const SupabaseProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <SupabaseContext.Provider value={supabase}>
+      <ConfirmationModal/>
       {children}
     </SupabaseContext.Provider>
   );

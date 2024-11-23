@@ -1,24 +1,25 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-// You can store the confirmation state in a session or database if necessary
-let confirmationRequests = [];
+let confirmationRequests: { name: string; amount: number; bank: string }[] = [];
 
-export default async function handler(req:any, res:any) {
-  if (req.method === 'POST') {
-    const { name, amount, bank } = req.body;
+// POST handler for receiving confirmation requests
+export async function POST(req: Request) {
+  const { name, amount, bank } = await req.json();  // Use req.json() to parse the body
 
-    if (!name || !amount || !bank) {
-      return res.status(400).json({ error: 'name and amount and bank' });
-    }
-
-    // Store the confirmation request (can be stored in DB/session if needed)
-    confirmationRequests.push({ name, amount, bank });
-
-    // You can use WebSockets, SSE, or polling to notify the client-side (WebSocket is the most efficient)
-
-    // Respond to Lambda that the request was received
-    return res.status(200).json({ status: 'success', message: 'Confirmation request received' });
-  } else {
-    return res.status(405).json({ error: 'Method not allowed' });
+  // Validate incoming data
+  if (!name || !amount || !bank) {
+    return new Response(
+      JSON.stringify({ error: 'Name, amount, and bank are required.' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    );
   }
+
+  // Store the confirmation request
+  confirmationRequests.push({ name, amount, bank });
+
+  // Respond with success
+  return new Response(
+    JSON.stringify({ status: 'success', message: 'Confirmation request received' }),
+    { status: 200, headers: { 'Content-Type': 'application/json' } }
+  );
 }

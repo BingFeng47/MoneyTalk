@@ -199,111 +199,114 @@ export default function Goal() {
 
 
 
-  return (
-    <div className='w-full'>
+    return (
+      <div className="w-full">
         <div className="flex-grow border-b py-6 sm:py-4 px-4">
-            <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <h1 className="text-3xl font-bold pl-3 tracking-tight">Financial Goals</h1>
             <AddGoal />
-            </div>
+          </div>
         </div>
         
-        <div className='px-4 pt-6 pb-2'>
-          <h1 className='text-muted-foreground'>Overview</h1>
+        <div className="px-4 pt-6 pb-2">
+          <h1 className="text-muted-foreground">Overview</h1>
         </div>
-
-        <div className=" px-4 grid gap-4 auto-rows-fr md:grid-cols-2 lg:grid-cols-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
-              <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Pocket Balance
-                </CardTitle>
-                  <Wallet2 className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.current_amount, 0).toFixed(2)}</div>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Monthly Contribution Needed </CardTitle>
-                  <Repeat className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.monthly_contribution, 0).toFixed(2)}</div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Total Goals</CardTitle>
-                  <GoalIcon className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">{accountOverview.total_goals}</div>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Goals Completed</CardTitle>
-                <Check className="h-4 w-4 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                <div className="text-2xl font-bold">{accountOverview.total_goals_completed}</div>
-                </CardContent>
-              </Card>
-          </div>
-
-        <div className='px-4 pt-6 pb-2'>
-          <h1 className='text-muted-foreground'>Goals</h1>
+    
+        <div className="px-4 grid gap-4 auto-rows-fr md:grid-cols-2 lg:grid-cols-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
+          <Card className="z-0"> {/* Normal z-index for the cards */}
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                Total Pocket Balance
+              </CardTitle>
+              <Wallet2 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.current_amount, 0).toFixed(2)}</div>
+            </CardContent>
+          </Card>
+          
+          <Card className="z-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Monthly Contribution Needed </CardTitle>
+              <Repeat className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">RM {goals.reduce((total, goal) => total + goal.monthly_contribution, 0).toFixed(2)}</div>
+            </CardContent>
+          </Card>
+    
+          <Card className="z-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Goals</CardTitle>
+              <GoalIcon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{accountOverview.total_goals}</div>
+            </CardContent>
+          </Card>
+          
+          <Card className="z-0">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Goals Completed</CardTitle>
+              <Check className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{accountOverview.total_goals_completed}</div>
+            </CardContent>
+          </Card>
         </div>
-
+    
+        <div className="px-4 pt-6 pb-2">
+          <h1 className="text-muted-foreground">Goals</h1>
+        </div>
+    
         {/* All Goals */}
-        <div className="px-4 space-y-4 ">
-            <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+        <div className="px-4 space-y-4">
+          <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
             {goals.map(goal => (
-              <Card key={goal.title} className="relative group">
-              <CardHeader className='px-4 pb-2'>
-                <img src={goal.image_url} alt={goal.title} className="w-full pb-2 h-40 object-cover rounded-lg" />
-                <CardTitle>{goal.title}</CardTitle>
-                <div className='flex justify-between'>
-                <p className='text-muted-foreground text-xs'>RM {goal.current_amount} / RM {goal.target_amount}</p>
-                <p className='text-muted-foreground text-xs'>RM{goal.monthly_contribution} / month</p>
-                </div>
-              </CardHeader>
-
-              <CardContent className='pt-0 px-4'>
-              <div className="relative w-full h-2.5">
-                <div className="absolute inset-0 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-                <div className="absolute inset-0 bg-primary rounded-full" style={{ width: (goal.current_amount / goal.target_amount) * 100 + '%' }}></div>
-              </div>
-              </CardContent>
-
-              <CardFooter className='px-4 flex justify-center gap-2'>
-                {goal.completed ? 
-                <Button className='w-full' disabled variant={'secondary'}>
-                <Check className="mr-2 h-4 w-4" /> Completed
+              <Card key={goal.title} className="relative group z-10"> {/* Normal z-index for each card */}
+                <CardHeader className="px-4 pb-2">
+                  <img src={goal.image_url} alt={goal.title} className="w-full pb-2 h-40 object-cover rounded-lg" />
+                  <CardTitle>{goal.title}</CardTitle>
+                  <div className="flex justify-between">
+                    <p className="text-muted-foreground text-xs">RM {goal.current_amount} / RM {goal.target_amount}</p>
+                    <p className="text-muted-foreground text-xs">RM{goal.monthly_contribution} / month</p>
+                  </div>
+                </CardHeader>
+    
+                <CardContent className="pt-0 px-4">
+                  <div className="relative w-full h-2.5">
+                    <div className="absolute inset-0 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                    <div className="absolute inset-0 bg-primary rounded-full" style={{ width: (goal.current_amount / goal.target_amount) * 100 + '%' }}></div>
+                  </div>
+                </CardContent>
+    
+                <CardFooter className="px-4 flex justify-center gap-2">
+                  {goal.completed ? (
+                    <Button className="w-full" disabled variant="secondary">
+                      <Check className="mr-2 h-4 w-4" /> Completed
+                    </Button>
+                  ) : (
+                    <AddPocketMoney goal={goal} balance={balance} account={currentAccount} />
+                  )}
+                  
+                  <Button className="w-full">
+                    <Withdraw goal={goal} balance={balance} account={currentAccount} />
+                  </Button>
+                </CardFooter>
+    
+                {/* Button for deleting goal with correct z-index */}
+                <Button
+                  className="absolute top-2 right-2 hidden group-hover:block z-30" 
+                  variant="destructive"
+                  onClick={() => handleDeleteGoal(goal)}
+                >
+                  <Trash2 />
                 </Button>
-                :
-                <AddPocketMoney goal={goal} balance={balance} account={currentAccount}/>
-                }
-                
-                <Button className='w-full'>
-                <Withdraw goal={goal} balance={balance} account={currentAccount}/>
-                </Button>
-              </CardFooter>
-
-              <Button className="absolute top-2 right-2 hidden group-hover:block" variant="destructive" onClick={() => handleDeleteGoal(goal)}>
-                <Trash2/>
-              </Button>
               </Card>
             ))}
-            </div>
+          </div>
         </div>
-    </div>
-
-
-  )
+      </div>
+    );
 }
