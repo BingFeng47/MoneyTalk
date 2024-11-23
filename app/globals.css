@@ -89,3 +89,34 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 }
+
+/* Add borders to the table */
+table {
+  width: 100%;
+  border-collapse: collapse; /* Ensures borders don't double up */
+  margin: 16px 0;
+}
+
+/* Add border to table cells */
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+/* Make table font smaller */
+table {
+  font-size: 0.65rem; /* Adjust the size as needed */
+  border-radius: 0.5rem; /* Adjust the radius as needed */
+  border: 1px solid #ccc; /* Ensure border is consistent */
+}
+/* Add background color to header */
+/* th {
+  background-color: #f5f5f5;
+} */
+
+/* Optional: Add hover effect for rows */
+/* tr:hover {
+  background-color: #f9f9f9;
+} */
