@@ -241,6 +241,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
         <p className="text-xs font-bold">Quick Prompt</p>
         <div className="flex gap-4 my-2 overflow-x-auto no-scrollbar sm:scrollbar">
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Am I financially ready for a partner?')}>Am I financially ready for a partner?</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Can I afford a 1000 sqft condominium in Ampang Area?')}>Can I afford a 1000 sqft condominium in Ampang Area?</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Help me create a financial goal')}>Help me create a financial goal</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`J&T Express Notification :
   Your package is currently at our center. We've attempted delivery twice but couldn't complete it due to missing address details. Please confirm or update your address within the next 24 hours to avoid the return of your parcel. Update your information at https://jtexpess.top/my and we will attempt to ship your package again within a day. Thank you.
