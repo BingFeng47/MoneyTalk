@@ -202,9 +202,9 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
             <h1 className="text-xl text-white font-bold">MoneyTalk</h1>
           </div>
           <div className="pr-2">
-            <button className="hidden md:block" onClick={handleOnClose}>
+            <Button className="hidden md:block" onClick={handleOnClose}>
               <CircleX className="text-white" />
-            </button>
+            </Button>
           </div>
         </div>
   
