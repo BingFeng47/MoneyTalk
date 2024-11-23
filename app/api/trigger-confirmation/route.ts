@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 let confirmationRequests: { name: string; amount: number; bank: string }[] = [];
 
 // POST handler for receiving confirmation requests
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function triggerConfirmation(req: NextApiRequest, res: NextApiResponse) {
   // Handle preflight CORS (OPTIONS request)
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
@@ -35,4 +35,4 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-export default handler;
+export default triggerConfirmation;
