@@ -212,7 +212,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
         <div className="flex-grow overflow-y-auto p-4">
           {/* Chat messages */}
           {responses.map((response, index) => (
-            <div key={index} className={`mb-2 self-end ${response.user === 'user' ? 'bg-secondary' : 'bg-primary '} text-white px-4 py-2 rounded-lg flex gap-2 items-center`}>
+            <div key={index} className={`mb-2 self-end ${response.user === 'user' ? 'bg-primary' : 'bg-secondary '} text-white px-4 py-2 rounded-lg flex gap-2 items-center`}>
               <div className="py-2 rounded-lg flex gap-4 items-center">
               <div className="flex-shrink-0 self-start">
                 {response.user === 'user' ? <Bird className="text-white" size={20} /> : <Bot className="text-white" size={20} />}
