@@ -69,22 +69,6 @@ export function Dashboard({ account }: { account: string }) {
 
     // Filter information based on account
     useEffect(() => {
-        const filteredBalance = account === 'all' 
-            ? ((user?.cimb_balance ?? 0) + (user?.maybank_balance ?? 0)) 
-            : account === 'cimb' 
-            ? (user?.cimb_balance ?? 0) 
-            : (user?.maybank_balance ?? 0);
-
-        const filteredBankTransaction = account === 'all' ? transactions : transactions.filter(transaction => transaction.bank.toLowerCase() === account.toLowerCase());
-
-        setFilteredTransactions(filteredBankTransaction)
-        setBalance(filteredBalance);
-    }, [account, user]);
-
-
-    // Fetch Data
-    useEffect(() => {
-        
         // Fetch transactions
         const fetchTransactions = async () => {
             const { data, error } = await supabase
@@ -130,7 +114,70 @@ export function Dashboard({ account }: { account: string }) {
         fetchPocket()
         fetchUser()
         fetchTransactions()
-    }, [supabase])
+
+
+        const filteredBalance = account === 'all' 
+            ? ((user?.cimb_balance ?? 0) + (user?.maybank_balance ?? 0)) 
+            : account === 'cimb' 
+            ? (user?.cimb_balance ?? 0) 
+            : (user?.maybank_balance ?? 0);
+
+        const filteredBankTransaction = account === 'all' ? transactions : transactions.filter(transaction => transaction.bank.toLowerCase() === account.toLowerCase());
+
+        setFilteredTransactions(filteredBankTransaction)
+        setBalance(filteredBalance);
+    }, [account, user]);
+
+
+    // Fetch Data
+    // useEffect(() => {
+        
+        // // Fetch transactions
+        // const fetchTransactions = async () => {
+        //     const { data, error } = await supabase
+        //         .from('transactions')
+        //         .select('*')
+        //         .order('date', { ascending: false })
+
+        //     if (error) {
+        //         console.error('Error fetching transactions:', error)
+        //     } else {
+        //         setTransactions(data)
+        //     }
+        // }
+
+        // // Fetch User
+        // const fetchUser = async () => {
+        //     const { data, error } = await supabase
+        //         .from('user')
+        //         .select('*')
+        //         .eq('id', 2024001)
+
+        //     if (error) {
+        //         console.error('Error fetching balance:', error)
+        //     } else {
+        //         setUser(data[0])
+        //     }
+        // }
+
+        // // Fetch goal
+        // const fetchPocket = async () => {
+        //     const { data, error } = await supabase
+        //         .from('goals')
+        //         .select('*')
+        //         .eq('user_id', 2024001)
+
+        //     if (error) {
+        //         console.error('Error fetching goals:', error)
+        //     } else {
+        //         setGoals(data)
+        //     }
+        // }
+
+        // fetchPocket()
+        // fetchUser()
+        // fetchTransactions()
+    // }, [supabase])
 
 
 
