@@ -193,7 +193,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
   }
 
   return (
-    <div className="h-[calc(100vh-50px)] w-2/3 flex flex-col  px-5 pt-6">
+    <div className="h-[calc(100vh-50px)] md:w-2/3 flex flex-col  px-5 pt-6">
       <div className="border-2 border-muted rounded-lg h-full flex flex-col">
       {/* Header */}
       <div className="bg-primary flex justify-between items-center p-4 rounded-t-lg gap-2">
