@@ -57,12 +57,15 @@ const items = [
   },
 ]
 
-export function AppSidebar({ onAccountChange }: { onAccountChange: (account: string) => void }) {
+export function AppSidebar({ onAccountChange, onAccountConnect }: { onAccountChange: (account: string) => void, onAccountConnect: () => void }) {
   const [selectedAccount, setSelectedAccount] = useState('all')
-
   const handleAccountChange = (account: string) => {
     setSelectedAccount(account)
     onAccountChange(account)
+  }
+
+  const handleConnect = () => {
+    onAccountConnect()
   }
 
   return (
@@ -100,11 +103,12 @@ export function AppSidebar({ onAccountChange }: { onAccountChange: (account: str
                     <Cat strokeWidth={1.5} size={16} /> Maybank: 9928312374
                     </span>
                 </SelectItem>
-                <div  className="border-2 border-dashed border-gray-300 mt-2 p-2 hover:cursor-pointer rounded-lg text-sm hover:bg-accent">
+                <div onClick={handleConnect} className="border-2 border-dashed border-gray-300 mt-2 p-2 hover:cursor-pointer rounded-lg text-sm hover:bg-accent">
                     <span className="flex justify-center items-center gap-3">
-                    <CirclePlus strokeWidth={1.5} size={16} /> Add Bank Account
+                      <CirclePlus strokeWidth={1.5} size={16} /> Add Bank Account
                     </span>
                 </div>
+                
                 </SelectContent>
             </Select>
         </div>
