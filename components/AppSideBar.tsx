@@ -1,5 +1,5 @@
 'use client'
-import { ArrowLeftRight, Bird, Bot, Calendar, Cannabis, Cat, ChevronsUpDown, CirclePlus, Clover, Goal, Home, Inbox, Leaf, LogOut, Search, Settings, Sprout, Squirrel, WalletCards } from "lucide-react"
+import { ArrowLeftRight, Bird, Bot, Calendar, Cannabis, Cat, ChevronsUpDown, CirclePlus, Clover, Goal, Home, Inbox, Leaf, LogOut, Search, Settings, Sprout, Squirrel, TentTree, WalletCards } from "lucide-react"
 
 import {
   Sidebar,
@@ -39,6 +39,11 @@ const items = [
     title: "Goals",
     url: "/demo/goals",
     icon: Goal,
+  },
+  {
+    title: "Retirement Plan",
+    url: "/demo/retirement",
+    icon: TentTree,
   },
   {
     title: "Inbox",

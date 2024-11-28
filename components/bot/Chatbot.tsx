@@ -209,7 +209,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
       </div>
     
       {/* Scrollable Chat Area */}
-      <div className="flex-grow overflow-y-auto p-4">
+      <div className="flex-grow overflow-y-auto p-4 dashboard-insights">
         {/* Chat messages */}
         {responses.map((response, index) => (
         <div key={index} className={`mb-2 self-end ${response.user === 'user' ? 'bg-primary' : 'dark:bg-secondary bg-primary/70 '} text-white px-4 py-2 rounded-lg flex gap-2 items-center`}>

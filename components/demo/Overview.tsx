@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from '@radix-ui/react-avatar'
 import { Button } from '../ui/button'
 import { format } from 'date-fns'
 import { useSupabase } from '@/app/demo/layout'
+import DashboardInsights from '../DashboardInsights'
 
 interface OverviewProps {
   goals: Array<{
@@ -104,6 +105,7 @@ export default function Overview({  goals, balance, recentTransactions, savingsG
                         </CardContent>
                         </Card>
                     </div>
+                    <DashboardInsights/>
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))' }}>
                         <Card className="col-span-4">
                         <CardHeader>
@@ -207,7 +209,7 @@ export default function Overview({  goals, balance, recentTransactions, savingsG
                         </ResponsiveContainer>
                         </CardContent>
                         </Card>
-                        <Card className="col-span-4 sm:col-span-3">
+                        {/* <Card className="col-span-4 sm:col-span-3">
                         <CardHeader>
                         <CardTitle>Financial Insights</CardTitle>
                         </CardHeader>
@@ -232,7 +234,7 @@ export default function Overview({  goals, balance, recentTransactions, savingsG
                         <PieChart className="mr-2 h-4 w-4" /> View Detailed Analysis
                         </Button>
                         </CardFooter>
-                        </Card>
+                        </Card> */}
                     </div>
                     </div>
   )

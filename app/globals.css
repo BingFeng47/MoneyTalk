@@ -147,3 +147,47 @@ table {
   gap: 10px;
   z-index: 10000; /* Modal content should be above the overlay */
 }
+
+/* globals.css */
+.dashboard-insights ul {
+  list-style: disc inside;
+  margin-left: 20px;
+}
+
+.dashboard-insights ol {
+  list-style: decimal inside;
+  margin-left: 20px;
+}
+
+.dashboard-insights table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.dashboard-insights th,
+.dashboard-insights td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+/* globals.css */
+.retirement-insights ul {
+  list-style: disc inside;
+  margin-left: 20px;
+}
+
+.retirement-insights ol {
+  list-style: decimal inside;
+  margin-left: 20px;
+}
+
+.retirement-insights table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.retirement-insights th,
+.retirement-insights td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}

@@ -5,6 +5,7 @@ import { useSupabase } from '@/app/demo/layout'
 import Transaction from './Transaction'
 import Overview from './Overview'
 import Analytics from './Analytics'
+import DashboardInsights from '../DashboardInsights'
 
 interface Goal {
     user_id: number,
@@ -192,11 +193,12 @@ export function Dashboard({ account }: { account: string }) {
 
         {/* Content */}
         <div className="flex-grow space-y-4 p-8 pt-6">
+            {/* <DashboardInsights /> */}
             <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="space-y-4">
                 <TabsList>
                     <TabsTrigger value="overview">Overview</TabsTrigger>
                     <TabsTrigger value="transaction">Transactions</TabsTrigger>
-                    <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                    {/* <TabsTrigger value="analytics">Analytics</TabsTrigger> */}
                 </TabsList>
                 <TabsContent value="overview" className="space-y-4">
                     <Overview goals={goals} balance={balance} setActiveTab={setActiveTab} recentTransactions={FilteredTransactions} savingsGoalData={savingsGoalData}/>
@@ -206,9 +208,9 @@ export function Dashboard({ account }: { account: string }) {
                     <Transaction/>
                 </TabsContent>
                 
-                <TabsContent value="analytics" className="space-y-4">
+                {/* <TabsContent value="analytics" className="space-y-4">
                     <Analytics/>
-                </TabsContent>
+                </TabsContent> */}
 
             </Tabs>
       </div>
