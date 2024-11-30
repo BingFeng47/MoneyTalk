@@ -226,8 +226,14 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
         {loading && (
         <div className="mb-2 self-end text-primary px-4 py-2 rounded-lg flex gap-2 justify-center items-center">
           <div className="py-2 rounded-lg flex gap-4 items-center">
-          <div className="flex-grow">
-            <img src="/chatbot/bird.gif" alt="Loading" className="w-12 h-12" />
+          <div className="flex-grow ">
+
+            <div className='hidden dark:block'>
+              <img src="/chatbot/bird_white.gif" alt="Loading" className="w-12 h-12" />
+            </div>
+            <div className=' dark:hidden'>
+              <img src="/chatbot/bird.gif" alt="Loading" className="w-12 h-12" />
+            </div>
             {/* <span className="animate-pulse">Hold on… My robot brain needs a moment!</span> */}
           </div>
           </div>
