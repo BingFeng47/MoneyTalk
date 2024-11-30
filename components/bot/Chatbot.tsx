@@ -227,7 +227,8 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
         <div className="mb-2 self-end text-primary px-4 py-2 rounded-lg flex gap-2 justify-center items-center">
           <div className="py-2 rounded-lg flex gap-4 items-center">
           <div className="flex-grow">
-            <span className="animate-pulse">Hold on… My robot brain needs a moment!</span>
+            <img src="/chatbot/bird.gif" alt="Loading" className="w-12 h-12" />
+            {/* <span className="animate-pulse">Hold on… My robot brain needs a moment!</span> */}
           </div>
           </div>
         </div>
