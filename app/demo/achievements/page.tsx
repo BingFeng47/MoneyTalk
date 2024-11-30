@@ -28,7 +28,7 @@ export default function Achievements() {
                             <p className="text-muted-foreground text-xs pt-1"> You beat 30% of the users!</p>
                         </div>
                         <Image 
-                                src="/achievements/modelGroup2.png" 
+                                src="/achievements/medal02.png" 
                                 alt="trophy" 
                                 width={150} 
                                 height={150} 
@@ -50,7 +50,7 @@ export default function Achievements() {
                             <p className="text-muted-foreground text-xs pt-1"> You beat 47% of the users!</p>
                         </div>
                         <Image 
-                                src="/achievements/modelGroup1.png" 
+                                src="/achievements/medal01.png" 
                                 alt="trophy" 
                                 width={150} 
                                 height={150} 
@@ -73,7 +73,7 @@ export default function Achievements() {
                         
                         </div>
                         <Image 
-                                src="/achievements/modelGroup3.png" 
+                                src="/achievements/medal03.png" 
                                 alt="trophy" 
                                 width={150} 
                                 height={150} 
