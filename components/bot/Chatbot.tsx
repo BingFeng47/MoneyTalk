@@ -246,6 +246,7 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Based on my financial health, help me create a retirement plan.')}>Help me create a retirement plan</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit("How's my Credit Health?")}>How's my Credit Health?</Button>
           <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('I want to retire on age 50, create plan')}>I want to retire on age 50, create plan</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Suggest me a credit card')}>Suggest me a credit card</Button>
         </div>
         </div>
     
