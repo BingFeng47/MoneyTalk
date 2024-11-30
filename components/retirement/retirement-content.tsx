@@ -44,10 +44,10 @@ export default function RetirementContent() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await supabase.from('retirement_plan').select('*').then(({ data, error }) => {
+      await supabase.from('retirement_plan').select('*').order('created_at', { ascending: false }).then(({ data, error }) => {
         if (error) throw error
         setRetirementPlanData(data[0] || null)
-    })
+      })
 
       const { data: userData, error: userError } = await supabase.from('user').select('*').eq('id', 2024001).single()
       if (userError) console.error('Error fetching user data:', userError)

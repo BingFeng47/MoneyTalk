@@ -38,41 +38,42 @@ export function AddPocketMoney({ goal, balance, account }: { goal: any, balance:
     fetchLatestTransaction();
   }, []);
 
-  const handleSave = async () => {
+  const handleSave = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent default behavior
     if (amount > balance) {
       alert("Amount exceeds available balance.");
       return;
     }
-
+  
     if (amount > goal.target_amount - goal.current_amount) {
       alert("Amount exceeds goal target amount.");
       return;
     }
-
+  
     const updatedAmount = goal.current_amount + amount;
     const goalIsCompleted = updatedAmount >= goal.target_amount;
     setGoalCompleted(goalIsCompleted);
-
+  
     const { data, error } = await supabase
       .from('goals')
       .update({
         current_amount: updatedAmount,
-        completed: goalIsCompleted
+        completed: goalIsCompleted,
       })
       .eq('title', goal.title);
-
+  
     let updateData = {};
     if (account.toLowerCase() === 'cimb') {
       updateData = { cimb_balance: balance - amount };
     } else if (account.toLowerCase() === 'maybank') {
       updateData = { maybank_balance: balance - amount };
     }
-
+  
     const { error: userError } = await supabase
       .from('user')
       .update(updateData)
       .eq('id', goal.user_id);
-
+  
     const { error: transactionError } = await supabase
       .from('transactions')
       .insert([
@@ -88,12 +89,9 @@ export function AddPocketMoney({ goal, balance, account }: { goal: any, balance:
           payment_method: 'Internal Transfer', // Replace with actual payment method
         },
       ]);
-
+  
     if (goalIsCompleted) {
       setGoalCompleted(true); // Show modal
-      console.log(goalCompleted)
-    } else {
-      // window.location.href = "/demo/goals"; // Navigate only if not completed
     }
   };
 
