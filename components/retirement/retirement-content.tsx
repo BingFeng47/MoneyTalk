@@ -209,7 +209,7 @@ function RetirementProgressCard({ balance, goal, progressPercentage, shortfall, 
           <Alert variant="default" className="mt-4">
             <AlertTitle>Savings Gap</AlertTitle>
             <AlertDescription>
-              You're currently saving {(currentMonthlySavings.toFixed(2))} per month, but you need to save {(requiredMonthlySavings.toFixed(2))} to reach your retirement goal. Consider increasing your monthly savings by {(requiredMonthlySavings - currentMonthlySavings)}.
+              You're currently saving RM {(currentMonthlySavings.toFixed(2))} per month, but you need to save RM {(requiredMonthlySavings.toFixed(2))} to reach your retirement goal. Consider increasing your monthly savings by RM {(requiredMonthlySavings - currentMonthlySavings).toFixed(2)}.
             </AlertDescription>
           </Alert>
         )}
