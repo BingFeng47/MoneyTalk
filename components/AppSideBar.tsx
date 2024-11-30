@@ -1,5 +1,5 @@
 'use client'
-import { ArrowLeftRight, Bird, Bot, Calendar, Cannabis, Cat, ChevronsUpDown, CirclePlus, Clover, Goal, Home, Inbox, Leaf, LogOut, Search, Settings, Sprout, Squirrel, TentTree, WalletCards } from "lucide-react"
+import { ArrowLeftRight, Bird, Bot, Calendar, Cannabis, Cat, ChevronsUpDown, CirclePlus, Clover, Goal, Home, Inbox, Leaf, LogOut, Search, Settings, Sprout, Squirrel, TentTree, TrophyIcon, WalletCards } from "lucide-react"
 
 import {
   Sidebar,
@@ -25,16 +25,11 @@ const items = [
     url: "/demo/dashboard",
     icon: Home,
   },
-  {
-    title: "Transfer & Receive",
-    url: "/demo/transfer",
-    icon: ArrowLeftRight,
-  },
-  {
-    title: "Deposits, Loans & Cards",
-    url: "/demo/finance",
-    icon: WalletCards,
-  },
+  // {
+  //   title: "Transfer & Receive",
+  //   url: "/demo/transfer",
+  //   icon: ArrowLeftRight,
+  // },
   {
     title: "Goals",
     url: "/demo/goals",
@@ -46,14 +41,24 @@ const items = [
     icon: TentTree,
   },
   {
-    title: "Inbox",
-    url: "/demo/inbox",
-    icon: Inbox,
+    title: "Deposits, Loans & Cards",
+    url: "/demo/finance",
+    icon: WalletCards,
   },
   {
     title: "MoneyTalk",
     url: "/demo/chatbot",
     icon: Bot,
+  },
+  {
+    title: "Achievements",
+    url: "/demo/achievements",
+    icon: TrophyIcon,
+  },
+  {
+    title: "Inbox",
+    url: "/demo/inbox",
+    icon: Inbox,
   },
   {
     title: "Settings",

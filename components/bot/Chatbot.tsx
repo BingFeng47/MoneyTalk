@@ -240,16 +240,13 @@ function Chatbot({ handleOnClose }: { handleOnClose: () => void }) {
         <div className="p-2 flex flex-col">
         <p className="text-xs font-bold">Quick Prompt</p>
         <div className="flex gap-4 my-2 overflow-x-auto no-scrollbar sm:scrollbar">
-          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Am I financially ready for a partner?')}>Am I financially ready for a partner?</Button>
-          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Can I afford a 1000 sqft condominium in Ampang Area?')}>Can I afford a 1000 sqft condominium in Ampang Area?</Button>
-          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Help me create a financial goal')}>Help me create a financial goal</Button>
-          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`J&T Express Notification :
-  Your package is currently at our center. We've attempted delivery twice but couldn't complete it due to missing address details. Please confirm or update your address within the next 24 hours to avoid the return of your parcel. Update your information at https://jtexpess.top/my and we will attempt to ship your package again within a day. Thank you.
-  \n \nDo you think this is a scam messages?`)}>Test Scam Messages</Button>
-          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit(`Help me transfer ${Math.floor(Math.random() * 1000)} to Calvin Koay from CIMB bank`)}>Test Funds Transfer</Button>
-          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Hows my credit scoring? Any Suggestions?')}>Hows my credit scoring? Any Suggestions?</Button>
-          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Is there any anomaly in my transaction?')}>Is there any anomaly in my transaction?</Button>
-        </div>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Am I financially ready to get a child?')}>Am I financially ready to get children?</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Can I afford Mercedes C200?')}>Can I afford Mercedes C200?</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Create financial goal for this')}>Create financial goal for this</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('Based on my financial health, help me create a retirement plan.')}>Help me create a retirement plan</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit("How's my Credit Health?")}>How's my Credit Health?</Button>
+          <Button className="text-xs bg-inherit" variant="outline" onClick={() => quickPromptSubmit('I want to retire on age 50, create plan')}>I want to retire on age 50, create plan</Button>
+        </div>
         </div>
     
         {/* Input */}

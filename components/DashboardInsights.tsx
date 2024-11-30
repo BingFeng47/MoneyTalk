@@ -12,8 +12,13 @@ export default function DashboardInsights() {
   const [responses, setResponses] = useState<{ user: string; chat: string }[]>([]);
   const [sessionId] = useState(() => crypto.randomUUID());
 
+
+   const instructionPrompt = `
+   Use available data to analyse my financial health and provide insights and suggestions in Markdown format. Return in the format of: • 2 Praises (green text) • 2 Concerns (red text)
+`
+
   useEffect(() => {
-    const initialPrompt = "Use available data to analyze my financial health and provide insights and suggestions in Markdown format. Return only the insights and suggestions in point form and go to next line for another point.";
+    const initialPrompt = instructionPrompt;
     fetchBotResponse({ user: 'user', chat: initialPrompt });
   }, [refresh]);
 
@@ -73,38 +78,38 @@ export default function DashboardInsights() {
 
   return (
     <div id='DashboardInsights' className="dashboard-insights">
-      <Card>
-        <CardHeader className="flex justify-between flex-row items-center pb-0 mb-0">
-          <CardTitle className="flex items-center gap-2">
-            <IconBulb className="text-yellow-200" /> Personalized Insights
-          </CardTitle>
-          {!loading && (
-          <Button
-            onClick={() => {
-              setRefresh(!refresh);
-              setLoading(true);
-              setResponses([]);
-            }}
-            className='mb-0'
-          >
-            <RefreshCcw />
-          </Button>
-          )}
-        </CardHeader>
-        <CardContent className='pt-5 mt-0'>
-          {loading ? (
-            <div className="flex items-center">
-              <Loader2 className="animate-spin mr-2 text-primary" />
-              <p className="text-primary">Loading insights...</p>
-            </div>
-          ) : responses.length > 0 ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {responses[responses.length - 1].chat}
-            </ReactMarkdown>
-          ) : (
-            <p>No insights available yet.</p>
-          )}
-        </CardContent>
+      <Card className='pb-4'>
+      <CardHeader className="flex justify-between flex-row items-center mb-0">
+        <CardTitle className="flex items-center gap-2">
+        <IconBulb className="text-white" /> Personalized Insights
+        </CardTitle>
+        {!loading && (
+        <Button
+        onClick={() => {
+          setRefresh(!refresh);
+          setLoading(true);
+          setResponses([]);
+        }}
+        className='mb-0'
+        >
+        <RefreshCcw />
+        </Button>
+        )}
+      </CardHeader>
+      <CardContent className='pt-5 mt-0' style={{ maxHeight: '250px', overflowY: 'auto' }}>
+        {loading ? (
+        <div className="flex items-center">
+          <Loader2 className="animate-spin mr-2 text-muted-foreground" />
+          <p className="text-muted-foreground">Loading insights...</p>
+        </div>
+        ) : responses.length > 0 ? (
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {responses[responses.length - 1].chat}
+        </ReactMarkdown>
+        ) : (
+        <p>No insights available yet.</p>
+        )}
+      </CardContent>
       </Card>
     </div>
   );
