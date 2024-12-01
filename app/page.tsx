@@ -96,7 +96,15 @@ export default function Home() {
         {/* Hero Section */}
         <div className="relative flex w-full items-center justify-center bg-background z-10 h-screen">
             <section className="w-full py-12 md:py-24 lg:py-32 xl:py-42 z-50 flex flex-col justify-center items-center text-center space-y-4">
-            <Bird className="sm:w-48 sm:h-48 w-32 h-32" />
+            
+            <div className="dark:hidden">
+              <img src="/chatbot/bird.gif" alt="Bird GIF" className="sm:w-48 sm:h-48 w-32 h-32"/>
+            </div>
+            <div className=" hidden dark:block">
+              <img src="/chatbot/bird_white.gif" alt="Bird GIF" className="sm:w-48 sm:h-48 w-32 h-32"/>
+            </div>
+            
+            {/* <Bird className="sm:w-48 sm:h-48 w-32 h-32" /> */}
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
               <SparklesText
               className="lg:text-5xl"
