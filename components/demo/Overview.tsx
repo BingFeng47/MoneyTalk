@@ -67,12 +67,19 @@ export default function Overview({  goals, balance, recentTransactions, savingsG
                         <ArrowDownIcon className="h-4 w-4 text-muted-foreground" />
                         </CardHeader>
                         <CardContent>
-                        <div className="text-2xl font-bold">RM {
-                        recentTransactions
-                            .filter(transaction => transaction.transaction_type === 'debit' && new Date(transaction.date).getMonth() === new Date().getMonth())
-                            .reduce((total, transaction) => total + transaction.amount, 0)
-                            .toFixed(2)
-                        }</div>
+                        <div className="text-2xl font-bold">
+                            RM {recentTransactions
+                                .filter(transaction => 
+                                    transaction.transaction_type === 'debit' 
+                                    // &&
+                                    // transaction.date && // Ensure date exists
+                                    // !isNaN(new Date(transaction.date).getTime()) && // Validate date
+                                    // new Date(transaction.date).getMonth() === new Date().getMonth() && // Same month
+                                    // new Date(transaction.date).getFullYear() === new Date().getFullYear() // Same year
+                                )
+                                .reduce((total, transaction) => total + (transaction.amount || 0), 0) // Ensure amount is valid
+                                .toFixed(2)}
+                        </div>
                         <p className="text-xs text-muted-foreground">
                         +12% from last month
                         </p>
@@ -115,17 +122,21 @@ export default function Overview({  goals, balance, recentTransactions, savingsG
                         <ResponsiveContainer width="100%" height={350}>
                                 {(() => {
                                     const combinedData = recentTransactions
-                                        .filter(transaction => transaction.transaction_type === 'debit' && new Date(transaction.date).getMonth() === new Date().getMonth())
-                                        .reduce((acc: { category: string; amount: number }[], transaction) => {
-                                            const existingCategory = acc.find(item => item.category === transaction.category);
-                                            if (existingCategory) {
-                                                existingCategory.amount += transaction.amount;
-                                            } else {
-                                                acc.push({ category: transaction.category, amount: transaction.amount });
-                                            }
-                                            return acc;
-                                        }, [])
-                                        .sort((a, b) => b.amount - a.amount); // Sort descending by amount
+                                    .filter(transaction => {
+                                        const transactionDate = new Date(transaction.date);
+                                        const now = new Date();
+                                        return transaction.transaction_type === 'debit' 
+                                    })
+                                    .reduce((acc: { category: string; amount: number }[], transaction) => {
+                                        const existingCategory = acc.find(item => item.category === transaction.category);
+                                        if (existingCategory) {
+                                            existingCategory.amount += transaction.amount;
+                                        } else {
+                                            acc.push({ category: transaction.category, amount: transaction.amount });
+                                        }
+                                        return acc;
+                                    }, [])
+                                    .sort((a, b) => b.amount - a.amount);
                                     return (
                                         <BarChart data={combinedData}>
                                             <XAxis
